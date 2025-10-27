@@ -1,4 +1,4 @@
-package com.alaershov.mars_colony.message_dialog
+package com.alaershov.mars_colony.demo_dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,13 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alaershov.mars_colony.message_dialog.component.MessageDialogComponent
-import com.alaershov.mars_colony.message_dialog.component.PreviewMessageDialogComponent
+import com.alaershov.mars_colony.demo_dialog.component.DemoDialogComponent
+import com.alaershov.mars_colony.demo_dialog.component.PreviewDemoDialogComponent
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 
 @Composable
-fun MessageDialog(
-    component: MessageDialogComponent,
+fun DemoDialog(
+    component: DemoDialogComponent,
     modifier: Modifier = Modifier
 ) {
     val state by component.state.collectAsState()
@@ -50,8 +50,8 @@ fun MessageDialog(
 
 @Preview(device = "id:pixel_9")
 @Composable
-private fun MessageDialogPreview() {
+private fun DemoDialogPreview() {
     MarsColonyTheme {
-        MessageDialog(PreviewMessageDialogComponent())
+        DemoDialog(PreviewDemoDialogComponent())
     }
 }

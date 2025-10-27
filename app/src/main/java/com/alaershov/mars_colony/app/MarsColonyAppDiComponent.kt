@@ -1,6 +1,7 @@
 package com.alaershov.mars_colony.app
 
 import com.alaershov.mars_colony.dashboard.di.DashboardComponentDiModule
+import com.alaershov.mars_colony.demo_dialog.di.DemoDialogComponentDiModule
 import com.alaershov.mars_colony.habitat.di.HabitatComponentDiModule
 import com.alaershov.mars_colony.habitat.di.HabitatRepositoryDiModule
 import com.alaershov.mars_colony.message_dialog.di.MessageDialogComponentDiModule
@@ -34,6 +35,7 @@ import javax.inject.Singleton
         PowerComponentDiModule::class,
         SheetStackComponentDiModule::class,
         MessageDialogComponentDiModule::class,
+        DemoDialogComponentDiModule::class,
         HabitatRepositoryDiModule::class,
         PowerPlantRepositoryDiModule::class,
         WeatherDiModule::class,

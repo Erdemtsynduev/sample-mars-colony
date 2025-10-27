@@ -85,17 +85,37 @@ private fun ScreenContent(component: SheetStackComponent) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(vertical = 8.dp),
                 text = "Stack:$stack"
             )
 
             TextButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .padding(vertical = 8.dp),
                 text = "Single Dialog",
                 onClick = {
                     component.onOpenSingleDialogClick()
+                }
+            )
+
+            TextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                text = "Few Dialogs",
+                onClick = {
+                    component.onOpenFewDialogsClick()
+                }
+            )
+
+            TextButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                text = "Many Dialogs",
+                onClick = {
+                    component.onOpenManyDialogsClick()
                 }
             )
 

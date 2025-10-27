@@ -6,5 +6,7 @@ import kotlinx.serialization.Serializable
 sealed class SheetStackBottomSheetConfig {
 
     @Serializable
-    data object Sheet : SheetStackBottomSheetConfig()
+    data class Sheet(
+        val list: List<String>
+    ) : SheetStackBottomSheetConfig()
 }

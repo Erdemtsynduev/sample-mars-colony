@@ -9,7 +9,7 @@ import dagger.Module
 interface SheetStackComponentDiModule {
 
     @Binds
-    fun bindSheetStackComponent(
+    fun sheetStackComponentFactory(
         impl: DefaultSheetStackComponent.Factory,
     ): SheetStackComponent.Factory
 }

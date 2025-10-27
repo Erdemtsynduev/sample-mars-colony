@@ -13,6 +13,10 @@ interface SheetStackComponent {
 
     fun onOpenSingleDialogClick()
 
+    fun onOpenFewDialogsClick()
+
+    fun onOpenManyDialogsClick()
+
     interface Factory {
 
         fun create(

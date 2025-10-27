@@ -65,6 +65,7 @@ dependencies {
     implementation project(':feature-power')
     implementation project(':feature-sheet-stack')
     implementation project(':feature-message-dialog')
+    implementation project(':feature-demo-dialog')
     implementation project(':shared-weather')
 
     testImplementation 'junit:junit:4.13.2'

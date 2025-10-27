@@ -4,8 +4,8 @@ import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pop
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pushNew
-import com.alaershov.mars_colony.message_dialog.MessageDialogState
-import com.alaershov.mars_colony.message_dialog.component.MessageDialogComponent
+import com.alaershov.mars_colony.demo_dialog.DemoDialogState
+import com.alaershov.mars_colony.demo_dialog.component.DemoDialogComponent
 import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetConfig
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.pages.ChildPages
@@ -18,7 +18,7 @@ import dagger.assisted.AssistedInject
 class DefaultSheetStackComponent @AssistedInject internal constructor(
     @Assisted
     componentContext: ComponentContext,
-    private val messageDialogComponentFactory: MessageDialogComponent.Factory,
+    private val demoDialogComponentFactory: DemoDialogComponent.Factory,
 ) : SheetStackComponent, ComponentContext by componentContext {
 
     private val bottomSheetPagesNavigation = PagesNavigation<SheetStackBottomSheetConfig>()
@@ -35,10 +35,10 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
         componentContext: ComponentContext
     ): BottomSheetContentComponent {
         return when (config) {
-            SheetStackBottomSheetConfig.Sheet -> {
-                messageDialogComponentFactory.create(
+            is SheetStackBottomSheetConfig.Sheet -> {
+                demoDialogComponentFactory.create(
                     componentContext = componentContext,
-                    dialogState = MessageDialogState(
+                    dialogState = DemoDialogState(
                         message = "Message",
                         button = "Close"
                     ),
@@ -55,7 +55,37 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     }
 
     override fun onOpenSingleDialogClick() {
-        bottomSheetPagesNavigation.pushNew(SheetStackBottomSheetConfig.Sheet)
+        bottomSheetPagesNavigation.pushNew(
+            SheetStackBottomSheetConfig.Sheet(
+                listOf(
+                    "List Item"
+                )
+            )
+        )
+    }
+
+    override fun onOpenFewDialogsClick() {
+        for (i in 1..3) {
+            bottomSheetPagesNavigation.pushNew(
+                SheetStackBottomSheetConfig.Sheet(
+                    listOf(
+                        "List Item $i"
+                    )
+                )
+            )
+        }
+    }
+
+    override fun onOpenManyDialogsClick() {
+        for (i in 1..10) {
+            bottomSheetPagesNavigation.pushNew(
+                SheetStackBottomSheetConfig.Sheet(
+                    listOf(
+                        "List Item $i"
+                    )
+                )
+            )
+        }
     }
 
     private fun dismissBottomSheet() {

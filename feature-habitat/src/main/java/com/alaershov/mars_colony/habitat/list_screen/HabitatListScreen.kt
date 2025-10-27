@@ -9,33 +9,53 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
+import com.alaershov.mars_colony.bottom_sheet.unstyled.UnstyledChildPagesModalBottomSheet
 import com.alaershov.mars_colony.habitat.bottom_sheet.HabitatBottomSheetContent
 import com.alaershov.mars_colony.habitat.list_screen.component.HabitatListScreenComponent
 import com.alaershov.mars_colony.habitat.list_screen.component.PreviewHabitatListScreenComponent
 import com.alaershov.mars_colony.ui.R
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun HabitatListScreen(component: HabitatListScreenComponent) {
     Box {
         ScreenContent(component)
 
-        ChildPagesModalBottomSheet(
+//        ChildPagesModalBottomSheet(
+//            sheetContentPagesState = component.bottomSheetPages,
+//            onDismiss = component::onBottomSheetPagesDismiss
+//        ) { component ->
+//            HabitatBottomSheetContent(component)
+//        }
+
+        UnstyledChildPagesModalBottomSheet(
+            modifier = Modifier.fillMaxSize(),
             sheetContentPagesState = component.bottomSheetPages,
             onDismiss = component::onBottomSheetPagesDismiss
         ) { component ->

@@ -9,8 +9,7 @@ plugins {
 }
 
 android {
-    namespace 'com.alaershov.mars_colony.sheet_stack'
-
+    namespace 'com.alaershov.mars_colony.demo_dialog'
     compileSdk = 36
 
     defaultConfig {
@@ -44,6 +43,4 @@ dependencies {
 
     implementation project(':ui')
     implementation project(':bottom-sheet')
-    implementation project(':feature-message-dialog')
-    implementation project(':feature-demo-dialog')
 }
