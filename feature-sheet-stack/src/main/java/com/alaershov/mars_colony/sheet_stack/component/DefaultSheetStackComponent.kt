@@ -23,6 +23,8 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     private val demoDialogComponentFactory: DemoDialogComponent.Factory,
 ) : SheetStackComponent, ComponentContext by componentContext {
 
+    private val maxSize = 20
+
     private val bottomSheetPagesNavigation = PagesNavigation<SheetStackBottomSheetConfig>()
 
     override val bottomSheetPages: Value<ChildPages<*, BottomSheetContentComponent>> =
@@ -38,10 +40,12 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     ): BottomSheetContentComponent {
         return when (config) {
             is SheetStackBottomSheetConfig.Sheet -> {
+                val size = config.size
                 demoDialogComponentFactory.create(
                     componentContext = componentContext,
                     dialogState = DemoDialogState(
-                        message = "Message",
+                        size = size,
+                        message = "Dialog Size $size",
                         button = "Close"
                     ),
                     onButtonClick = {
@@ -67,34 +71,28 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
     override fun onOpenSingleDialogClick() {
         bottomSheetPagesNavigation.pushNew(
-            SheetStackBottomSheetConfig.Sheet(
-                listOf(
-                    "List Item"
-                )
-            )
+            SheetStackBottomSheetConfig.Sheet(1)
         )
     }
 
     override fun onOpenFewDialogsClick() {
-        for (i in 1..3) {
+        val sizeList = List(3) {
+            (1..maxSize).random()
+        }.sortedDescending()
+        for (size in sizeList) {
             bottomSheetPagesNavigation.pushNew(
-                SheetStackBottomSheetConfig.Sheet(
-                    listOf(
-                        "List Item $i"
-                    )
-                )
+                SheetStackBottomSheetConfig.Sheet(size)
             )
         }
     }
 
     override fun onOpenManyDialogsClick() {
-        for (i in 1..10) {
+        val sizeList = List(8) {
+            (1..maxSize).random()
+        }.sortedDescending()
+        for (size in sizeList) {
             bottomSheetPagesNavigation.pushNew(
-                SheetStackBottomSheetConfig.Sheet(
-                    listOf(
-                        "List Item $i"
-                    )
-                )
+                SheetStackBottomSheetConfig.Sheet(size)
             )
         }
     }

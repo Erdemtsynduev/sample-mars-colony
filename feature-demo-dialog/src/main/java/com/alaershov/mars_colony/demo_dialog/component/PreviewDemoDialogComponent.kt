@@ -7,6 +7,7 @@ class PreviewDemoDialogComponent : DemoDialogComponent {
 
     override val state = MutableStateFlow(
         DemoDialogState(
+            size = 3,
             message = "Preview Message",
             button = "Click me!"
         )
@@ -21,4 +22,18 @@ class PreviewDemoDialogComponent : DemoDialogComponent {
     override fun onCloseAllClick() {}
 
     override fun onCloseRandomClick() {}
+
+    override fun onCloseHalfClick() {}
+
+    override fun onAddClick() {}
+
+    override fun onAddFirstClick() {}
+
+    override fun onAddMiddleClick() {}
+
+    override fun onShuffleClick() {}
+
+    override fun onShiftForwardClick() {}
+
+    override fun onShiftBackwardClick() {}
 }

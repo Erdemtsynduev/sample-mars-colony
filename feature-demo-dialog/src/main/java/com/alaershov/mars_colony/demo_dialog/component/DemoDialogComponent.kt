@@ -18,6 +18,20 @@ interface DemoDialogComponent : BottomSheetContentComponent {
 
     fun onCloseRandomClick()
 
+    fun onCloseHalfClick()
+
+    fun onAddClick()
+
+    fun onAddFirstClick()
+
+    fun onAddMiddleClick()
+
+    fun onShuffleClick()
+
+    fun onShiftForwardClick()
+
+    fun onShiftBackwardClick()
+
     interface Factory {
 
         fun create(

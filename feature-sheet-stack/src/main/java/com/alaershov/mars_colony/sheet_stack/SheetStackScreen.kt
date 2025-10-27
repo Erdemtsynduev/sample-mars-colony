@@ -43,7 +43,7 @@ fun SheetStackScreen(component: SheetStackComponent) {
 
         ChildPagesModalBottomSheet(
             sheetContentPagesState = component.bottomSheetPages,
-            onDismiss = component::onBottomSheetPagesDismiss
+            onDismiss = component::onBottomSheetPagesDismiss,
         ) { component ->
             SheetStackBottomSheetContent(component)
         }
@@ -114,18 +114,6 @@ private fun ScreenContent(component: SheetStackComponent) {
                 onClick = {
                     component.onOpenManyDialogsClick()
                 }
-            )
-
-            Text(
-                text = "TODO сделать тестовый экран для стека БШ\n" +
-                        "!!! DraggableCards вдохновение !!!\n" +
-                        "- вставка на верхушку стека\n" +
-                        "- удаление с верхушки\n" +
-                        "- вставка в начало или в середину\n" +
-                        "- множественная вставка\n" +
-                        "- множественное удаление\n" +
-                        "- swap",
-                style = MaterialTheme.typography.titleLarge,
             )
         }
     }

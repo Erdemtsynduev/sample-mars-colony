@@ -38,6 +38,12 @@ fun DemoDialog(
             style = MaterialTheme.typography.headlineMedium
         )
 
+        Column {
+            for (i in 0 until state.size) {
+                Text("Item $i")
+            }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()

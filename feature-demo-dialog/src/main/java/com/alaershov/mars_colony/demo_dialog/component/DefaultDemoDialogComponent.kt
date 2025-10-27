@@ -42,6 +42,34 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onCloseRandomClick.invoke()
     }
 
+    override fun onCloseHalfClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAddClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAddFirstClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAddMiddleClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onShuffleClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onShiftForwardClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onShiftBackwardClick() {
+        TODO("Not yet implemented")
+    }
+
     @AssistedFactory
     interface Factory : DemoDialogComponent.Factory {
 
