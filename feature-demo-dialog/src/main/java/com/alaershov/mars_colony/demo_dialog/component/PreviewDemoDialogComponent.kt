@@ -15,4 +15,10 @@ class PreviewDemoDialogComponent : DemoDialogComponent {
     override val bottomSheetContentState = state
 
     override fun onButtonClick() {}
+
+    override fun onCloseClick() {}
+
+    override fun onCloseAllClick() {}
+
+    override fun onCloseRandomClick() {}
 }

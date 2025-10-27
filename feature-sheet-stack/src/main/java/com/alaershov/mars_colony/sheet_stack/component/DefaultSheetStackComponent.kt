@@ -3,7 +3,9 @@ package com.alaershov.mars_colony.sheet_stack.component
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pop
+import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.popRandom
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pushNew
+import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.replaceAll
 import com.alaershov.mars_colony.demo_dialog.DemoDialogState
 import com.alaershov.mars_colony.demo_dialog.component.DemoDialogComponent
 import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetConfig
@@ -44,6 +46,15 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                     ),
                     onButtonClick = {
                         dismissBottomSheet()
+                    },
+                    onCloseClick = {
+                        dismissBottomSheet()
+                    },
+                    onCloseAllClick = {
+                        bottomSheetPagesNavigation.replaceAll()
+                    },
+                    onCloseRandomClick = {
+                        bottomSheetPagesNavigation.popRandom()
                     },
                 )
             }

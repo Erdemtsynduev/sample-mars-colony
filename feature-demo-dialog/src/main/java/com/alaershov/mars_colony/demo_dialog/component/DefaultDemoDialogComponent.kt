@@ -12,8 +12,14 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     componentContext: ComponentContext,
     @Assisted
     dialogState: DemoDialogState,
-    @Assisted
+    @Assisted("onButtonClick")
     private val onButtonClick: () -> Unit,
+    @Assisted("onCloseClick")
+    private val onCloseClick: () -> Unit,
+    @Assisted("onCloseAllClick")
+    private val onCloseAllClick: () -> Unit,
+    @Assisted("onCloseRandomClick")
+    private val onCloseRandomClick: () -> Unit,
 ) : DemoDialogComponent, ComponentContext by componentContext {
 
     override val state = MutableStateFlow(dialogState)
@@ -24,13 +30,32 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onButtonClick.invoke()
     }
 
+    override fun onCloseClick() {
+        onCloseClick.invoke()
+    }
+
+    override fun onCloseAllClick() {
+        onCloseAllClick.invoke()
+    }
+
+    override fun onCloseRandomClick() {
+        onCloseRandomClick.invoke()
+    }
+
     @AssistedFactory
     interface Factory : DemoDialogComponent.Factory {
 
         override fun create(
             componentContext: ComponentContext,
             dialogState: DemoDialogState,
+            @Assisted("onButtonClick")
             onButtonClick: () -> Unit,
+            @Assisted("onCloseClick")
+            onCloseClick: () -> Unit,
+            @Assisted("onCloseAllClick")
+            onCloseAllClick: () -> Unit,
+            @Assisted("onCloseRandomClick")
+            onCloseRandomClick: () -> Unit,
         ): DefaultDemoDialogComponent
     }
 }

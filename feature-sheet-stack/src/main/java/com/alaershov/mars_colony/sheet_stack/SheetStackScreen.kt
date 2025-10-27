@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,9 +20,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
 import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetContent
 import com.alaershov.mars_colony.sheet_stack.component.PreviewSheetStackComponent
@@ -29,11 +32,14 @@ import com.alaershov.mars_colony.sheet_stack.component.SheetStackComponent
 import com.alaershov.mars_colony.ui.R
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.arkivanov.decompose.router.pages.ChildPages
 
 @Composable
 fun SheetStackScreen(component: SheetStackComponent) {
     Box {
         ScreenContent(component)
+
+        BottomSheetStackText(component)
 
         ChildPagesModalBottomSheet(
             sheetContentPagesState = component.bottomSheetPages,
@@ -80,15 +86,6 @@ private fun ScreenContent(component: SheetStackComponent) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            val stack by component.bottomSheetPages.subscribeAsState()
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                text = "Stack:$stack"
-            )
-
             TextButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,6 +144,36 @@ private fun TextButton(
         Text(
             text = text
         )
+    }
+}
+
+@Composable
+private fun BottomSheetStackText(component: SheetStackComponent) {
+    val stack by component.bottomSheetPages.subscribeAsState()
+
+    Box(
+        modifier = Modifier
+            .background(Color.Black.copy(alpha = 0.5f))
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 8.dp),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            text = "Stack:${stack.toPrettyString()}",
+            color = Color.White,
+        )
+    }
+}
+
+private fun ChildPages<*, BottomSheetContentComponent>.toPrettyString(): String {
+    return buildString {
+        appendLine("Selected Index = $selectedIndex")
+        items.forEachIndexed { index, child ->
+            appendLine("$index: config=${child.configuration} instance=${child.instance.hashCode().toHexString()}")
+        }
     }
 }
 

@@ -1,9 +1,15 @@
 package com.alaershov.mars_colony.demo_dialog
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,13 +41,54 @@ fun DemoDialog(
             style = MaterialTheme.typography.headlineLarge
         )
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    component.onCloseClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Close")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onCloseAllClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Close All")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onCloseRandomClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Close Random")
+            }
+        }
+
         Button(
             onClick = {
                 component.onButtonClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 8.dp)
         ) {
             Text(state.button)
         }
