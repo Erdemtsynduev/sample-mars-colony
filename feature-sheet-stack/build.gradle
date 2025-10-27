@@ -4,11 +4,12 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.compose'
+    id 'org.jetbrains.kotlin.plugin.serialization'
     id 'com.google.devtools.ksp'
 }
 
 android {
-    namespace 'com.alaershov.mars_colony.habitat'
+    namespace 'com.alaershov.mars_colony.sheet_stack'
 
     compileSdk = 36
 
@@ -43,8 +44,5 @@ dependencies {
 
     implementation project(':ui')
     implementation project(':bottom-sheet')
-    implementation project(':feature-habitat')
-    implementation project(':feature-power')
-    implementation project(':feature-sheet-stack')
-    implementation project(':shared-weather')
+    implementation project(':feature-message-dialog')
 }

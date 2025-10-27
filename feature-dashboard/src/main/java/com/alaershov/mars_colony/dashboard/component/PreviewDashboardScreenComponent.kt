@@ -21,4 +21,6 @@ class PreviewDashboardScreenComponent : DashboardScreenComponent {
     override fun onHabitatClick() {}
 
     override fun onPowerClick() {}
+
+    override fun onSheetStackClick() {}
 }

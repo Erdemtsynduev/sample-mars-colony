@@ -12,16 +12,20 @@ interface DashboardScreenComponent {
 
     fun onPowerClick()
 
+    fun onSheetStackClick()
+
     /**
      * Интерфейс фабрики для создания экземпляра этого компонента.
      *
      * Не привязан к DI фреймворку и вообще не знает о его существовании.
      */
     interface Factory {
+
         fun create(
             componentContext: ComponentContext,
             navigateToHabitatList: () -> Unit,
             navigateToPowerPlantList: () -> Unit,
+            navigateToSheetStack: () -> Unit,
         ): DashboardScreenComponent
     }
 }

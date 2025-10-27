@@ -7,6 +7,7 @@ import com.alaershov.mars_colony.habitat.info_screen.HabitatInfoScreen
 import com.alaershov.mars_colony.habitat.list_screen.HabitatListScreen
 import com.alaershov.mars_colony.power.list_screen.PowerPlantListScreen
 import com.alaershov.mars_colony.root.RootComponent.Child
+import com.alaershov.mars_colony.sheet_stack.SheetStackScreen
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.stack.ChildStack
 
@@ -31,6 +32,10 @@ fun RootNavigation(
 
         is Child.PowerPlantList -> {
             PowerPlantListScreen(instance.component)
+        }
+
+        is Child.SheetStack -> {
+            SheetStackScreen(instance.component)
         }
     }
 }

@@ -63,6 +63,7 @@ dependencies {
     implementation project(':feature-dashboard')
     implementation project(':feature-habitat')
     implementation project(':feature-power')
+    implementation project(':feature-sheet-stack')
     implementation project(':feature-message-dialog')
     implementation project(':shared-weather')
 

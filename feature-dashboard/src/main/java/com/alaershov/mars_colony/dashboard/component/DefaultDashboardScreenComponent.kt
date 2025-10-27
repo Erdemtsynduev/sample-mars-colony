@@ -33,6 +33,8 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
     private val navigateToHabitatList: () -> Unit,
     @Assisted("navigateToPowerPlantList")
     private val navigateToPowerPlantList: () -> Unit,
+    @Assisted("navigateToSheetStack")
+    private val navigateToSheetStack: () -> Unit,
 
     // ниже идут зависимости
     // их не нужно передавать в фабрику компонента
@@ -82,6 +84,10 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
         navigateToPowerPlantList()
     }
 
+    override fun onSheetStackClick() {
+        navigateToSheetStack()
+    }
+
     fun onRefreshClick() {
         scope.launch {
             habitatRepository.buildHabitat(1)
@@ -106,6 +112,8 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
             navigateToHabitatList: () -> Unit,
             @Assisted("navigateToPowerPlantList")
             navigateToPowerPlantList: () -> Unit,
+            @Assisted("navigateToSheetStack")
+            navigateToSheetStack: () -> Unit,
         ): DefaultDashboardScreenComponent
     }
 }

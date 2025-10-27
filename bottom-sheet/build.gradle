@@ -33,4 +33,5 @@ dependencies {
     implementation libs.bundles.compose
 
     implementation libs.bundles.decompose
+    implementation libs.composables
 }

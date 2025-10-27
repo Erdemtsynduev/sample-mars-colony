@@ -9,6 +9,7 @@ import com.alaershov.mars_colony.power.di.PowerComponentDiModule
 import com.alaershov.mars_colony.root.RootComponent
 import com.alaershov.mars_colony.root.di.RootComponentDiModule
 import com.alaershov.mars_colony.shared.weather.di.WeatherDiModule
+import com.alaershov.mars_colony.sheet_stack.di.SheetStackComponentDiModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -31,6 +32,7 @@ import javax.inject.Singleton
         DashboardComponentDiModule::class,
         HabitatComponentDiModule::class,
         PowerComponentDiModule::class,
+        SheetStackComponentDiModule::class,
         MessageDialogComponentDiModule::class,
         HabitatRepositoryDiModule::class,
         PowerPlantRepositoryDiModule::class,
