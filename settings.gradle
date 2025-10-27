@@ -47,6 +47,9 @@ dependencyResolutionManagement {
             version('dagger', '2.57.2')
             library('dagger-core', 'com.google.dagger', 'dagger').versionRef('dagger')
             library('dagger-compiler', 'com.google.dagger', 'dagger-compiler').versionRef('dagger')
+
+            version('composables', '1.46.0')
+            library('composables', 'com.composables', 'core').versionRef('composables')
         }
     }
 }
