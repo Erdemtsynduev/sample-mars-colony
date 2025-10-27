@@ -1,13 +1,11 @@
 package com.alaershov.mars_colony.demo_dialog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
@@ -33,12 +31,11 @@ fun DemoDialog(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
     ) {
         Text(
             text = state.message,
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineMedium
         )
 
         Row(
@@ -95,7 +92,7 @@ fun DemoDialog(
     }
 }
 
-@Preview(device = "id:pixel_9")
+@Preview(device = "id:pixel_9", showBackground = true)
 @Composable
 private fun DemoDialogPreview() {
     MarsColonyTheme {
