@@ -13,6 +13,8 @@ class PreviewSheetStackComponent : SheetStackComponent {
 
     override fun onBottomSheetPagesDismiss() {}
 
+    override fun onBottomSheetPagesDismiss(config: Any) {}
+
     override fun onBackClick() {}
 
     override fun onOpenSingleDialogClick() {}

@@ -1,5 +1,6 @@
 package com.alaershov.mars_colony.sheet_stack.component
 
+import android.util.Log
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.navigate
@@ -64,14 +65,17 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         dismissBottomSheet()
                     },
                     onCloseAllClick = {
+                        log("onCloseAllClick")
                         bottomSheetPagesNavigation.replaceAll()
                     },
                     onCloseFirstClick = {
+                        log("onCloseFirstClick")
                         bottomSheetPagesNavigation.navigate { items ->
                             items.drop(1)
                         }
                     },
                     onCloseRandomClick = {
+                        log("onCloseRandomClick")
                         bottomSheetPagesNavigation.navigate(
                             transformer = { items ->
                                 if (items.isEmpty()) {
@@ -84,6 +88,7 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         )
                     },
                     onCloseHalfClick = {
+                        log("onCloseHalfClick")
                         bottomSheetPagesNavigation.navigate { items ->
                             if (items.isEmpty()) {
                                 items
@@ -93,17 +98,20 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         }
                     },
                     onAddClick = {
+                        log("onAddClick")
                         bottomSheetPagesNavigation.pushNew(
                             SheetStackBottomSheetConfig.Sheet(randomSheetSize())
                         )
                     },
                     onAddFirstClick = {
+                        log("onAddFirstClick")
                         val config = SheetStackBottomSheetConfig.Sheet(randomSheetSize())
                         bottomSheetPagesNavigation.navigate { items ->
                             listOf(config) + items
                         }
                     },
                     onAddMiddleClick = {
+                        log("onAddMiddleClick")
                         val config = SheetStackBottomSheetConfig.Sheet(randomSheetSize())
                         bottomSheetPagesNavigation.navigate { items ->
                             val middleIndex = items.size / 2
@@ -113,11 +121,13 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         }
                     },
                     onShuffleClick = {
+                        log("onShuffleClick")
                         bottomSheetPagesNavigation.navigate { items ->
                             items.shuffled()
                         }
                     },
                     onShiftForwardClick = {
+                        log("onShiftForwardClick")
                         bottomSheetPagesNavigation.navigate { items ->
                             if (items.isEmpty()) {
                                 items
@@ -127,6 +137,7 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         }
                     },
                     onShiftBackwardClick = {
+                        log("onShiftBackwardClick")
                         bottomSheetPagesNavigation.navigate { items ->
                             if (items.isEmpty()) {
                                 items
@@ -142,6 +153,12 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
     override fun onBottomSheetPagesDismiss() {
         dismissBottomSheet()
+    }
+
+    override fun onBottomSheetPagesDismiss(config: Any) {
+        bottomSheetPagesNavigation.navigate { items ->
+            items.filter { it != config }
+        }
     }
 
     override fun onBackClick() {
@@ -181,7 +198,12 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     }
 
     private fun dismissBottomSheet() {
+        log("dismissBottomSheet")
         bottomSheetPagesNavigation.pop()
+    }
+
+    private fun log(message: String) {
+        Log.d("DefaultSheetStackComponent", message)
     }
 
     @AssistedFactory

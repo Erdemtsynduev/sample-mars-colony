@@ -11,6 +11,8 @@ interface SheetStackComponent {
 
     fun onBottomSheetPagesDismiss()
 
+    fun onBottomSheetPagesDismiss(config: Any)
+
     fun onBackClick()
 
     fun onOpenSingleDialogClick()
