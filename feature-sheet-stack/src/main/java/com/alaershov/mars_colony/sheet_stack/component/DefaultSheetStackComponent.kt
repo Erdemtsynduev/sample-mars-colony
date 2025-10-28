@@ -66,6 +66,11 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                     onCloseAllClick = {
                         bottomSheetPagesNavigation.replaceAll()
                     },
+                    onCloseFirstClick = {
+                        bottomSheetPagesNavigation.navigate { items ->
+                            items.drop(1)
+                        }
+                    },
                     onCloseRandomClick = {
                         bottomSheetPagesNavigation.navigate(
                             transformer = { items ->

@@ -18,6 +18,8 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     private val onCloseClick: () -> Unit,
     @Assisted("onCloseAllClick")
     private val onCloseAllClick: () -> Unit,
+    @Assisted("onCloseFirstClick")
+    private val onCloseFirstClick: () -> Unit,
     @Assisted("onCloseRandomClick")
     private val onCloseRandomClick: () -> Unit,
     @Assisted("onCloseHalfClick")
@@ -52,6 +54,10 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onCloseAllClick.invoke()
     }
 
+    override fun onCloseFirstClick() {
+        onCloseFirstClick.invoke()
+    }
+
     override fun onCloseRandomClick() {
         onCloseRandomClick.invoke()
     }
@@ -84,6 +90,10 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onShiftBackwardClick.invoke()
     }
 
+    override fun toString(): String {
+        return "DefaultDemoDialogComponent@${hashCode().toHexString()} size=${state.value.size}"
+    }
+
     @AssistedFactory
     interface Factory : DemoDialogComponent.Factory {
 
@@ -96,6 +106,8 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
             onCloseClick: () -> Unit,
             @Assisted("onCloseAllClick")
             onCloseAllClick: () -> Unit,
+            @Assisted("onCloseFirstClick")
+            onCloseFirstClick: () -> Unit,
             @Assisted("onCloseRandomClick")
             onCloseRandomClick: () -> Unit,
             @Assisted("onCloseHalfClick")

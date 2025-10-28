@@ -166,12 +166,12 @@ fun DemoDialog(
         ) {
             Button(
                 onClick = {
-                    component.onCloseClick()
+                    component.onCloseFirstClick()
                 },
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Text(text = "Close")
+                Text(text = "<- Close")
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -184,6 +184,18 @@ fun DemoDialog(
                     .weight(1f)
             ) {
                 Text(text = "Close All")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onCloseClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(text = "Close ->")
             }
         }
 
