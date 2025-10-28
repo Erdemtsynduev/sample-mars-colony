@@ -105,7 +105,10 @@ class DefaultRootComponent @AssistedInject internal constructor(
 
             Config.SheetStack -> Child.SheetStack(
                 sheetStackComponentFactory.create(
-                    componentContext = componentContext
+                    componentContext = componentContext,
+                    onBackClick = {
+                        navigation.pop()
+                    }
                 )
             )
         }

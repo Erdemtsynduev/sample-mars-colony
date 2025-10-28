@@ -20,6 +20,8 @@ import dagger.assisted.AssistedInject
 class DefaultSheetStackComponent @AssistedInject internal constructor(
     @Assisted
     componentContext: ComponentContext,
+    @Assisted("onBackClick")
+    private val onBackClick: () -> Unit,
     private val demoDialogComponentFactory: DemoDialogComponent.Factory,
 ) : SheetStackComponent, ComponentContext by componentContext {
 
@@ -69,6 +71,10 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
         dismissBottomSheet()
     }
 
+    override fun onBackClick() {
+        onBackClick.invoke()
+    }
+
     override fun onOpenSingleDialogClick() {
         bottomSheetPagesNavigation.pushNew(
             SheetStackBottomSheetConfig.Sheet(1)
@@ -106,6 +112,8 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
         override fun create(
             componentContext: ComponentContext,
+            @Assisted("onBackClick")
+            onBackClick: () -> Unit,
         ): DefaultSheetStackComponent
     }
 }

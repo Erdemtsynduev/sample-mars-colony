@@ -67,7 +67,7 @@ private fun ScreenContent(component: SheetStackComponent) {
             navigationIcon = {
                 IconButton(
                     onClick = {
-                        // TODO
+                        component.onBackClick()
                     }
                 ) {
                     Icon(

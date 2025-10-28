@@ -11,6 +11,8 @@ interface SheetStackComponent {
 
     fun onBottomSheetPagesDismiss()
 
+    fun onBackClick()
+
     fun onOpenSingleDialogClick()
 
     fun onOpenFewDialogsClick()
@@ -21,6 +23,7 @@ interface SheetStackComponent {
 
         fun create(
             componentContext: ComponentContext,
+            onBackClick: () -> Unit,
         ): SheetStackComponent
     }
 }
