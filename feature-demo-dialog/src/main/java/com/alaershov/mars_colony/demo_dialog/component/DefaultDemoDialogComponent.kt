@@ -20,6 +20,20 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     private val onCloseAllClick: () -> Unit,
     @Assisted("onCloseRandomClick")
     private val onCloseRandomClick: () -> Unit,
+    @Assisted("onCloseHalfClick")
+    private val onCloseHalfClick: () -> Unit,
+    @Assisted("onAddClick")
+    private val onAddClick: () -> Unit,
+    @Assisted("onAddFirstClick")
+    private val onAddFirstClick: () -> Unit,
+    @Assisted("onAddMiddleClick")
+    private val onAddMiddleClick: () -> Unit,
+    @Assisted("onShuffleClick")
+    private val onShuffleClick: () -> Unit,
+    @Assisted("onShiftForwardClick")
+    private val onShiftForwardClick: () -> Unit,
+    @Assisted("onShiftBackwardClick")
+    private val onShiftBackwardClick: () -> Unit,
 ) : DemoDialogComponent, ComponentContext by componentContext {
 
     override val state = MutableStateFlow(dialogState)
@@ -43,31 +57,31 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     }
 
     override fun onCloseHalfClick() {
-        TODO("Not yet implemented")
+        onCloseHalfClick.invoke()
     }
 
     override fun onAddClick() {
-        TODO("Not yet implemented")
+        onAddClick.invoke()
     }
 
     override fun onAddFirstClick() {
-        TODO("Not yet implemented")
+        onAddFirstClick.invoke()
     }
 
     override fun onAddMiddleClick() {
-        TODO("Not yet implemented")
+        onAddMiddleClick.invoke()
     }
 
     override fun onShuffleClick() {
-        TODO("Not yet implemented")
+        onShuffleClick.invoke()
     }
 
     override fun onShiftForwardClick() {
-        TODO("Not yet implemented")
+        onShiftForwardClick.invoke()
     }
 
     override fun onShiftBackwardClick() {
-        TODO("Not yet implemented")
+        onShiftBackwardClick.invoke()
     }
 
     @AssistedFactory
@@ -84,6 +98,20 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
             onCloseAllClick: () -> Unit,
             @Assisted("onCloseRandomClick")
             onCloseRandomClick: () -> Unit,
+            @Assisted("onCloseHalfClick")
+            onCloseHalfClick: () -> Unit,
+            @Assisted("onAddClick")
+            onAddClick: () -> Unit,
+            @Assisted("onAddFirstClick")
+            onAddFirstClick: () -> Unit,
+            @Assisted("onAddMiddleClick")
+            onAddMiddleClick: () -> Unit,
+            @Assisted("onShuffleClick")
+            onShuffleClick: () -> Unit,
+            @Assisted("onShiftForwardClick")
+            onShiftForwardClick: () -> Unit,
+            @Assisted("onShiftBackwardClick")
+            onShiftBackwardClick: () -> Unit,
         ): DefaultDemoDialogComponent
     }
 }

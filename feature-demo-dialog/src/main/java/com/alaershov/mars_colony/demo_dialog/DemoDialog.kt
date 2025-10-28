@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,6 +32,7 @@ fun DemoDialog(
 
     Column(
         modifier = modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxWidth()
             .padding(16.dp),
     ) {
@@ -52,10 +55,121 @@ fun DemoDialog(
         ) {
             Button(
                 onClick = {
-                    component.onCloseClick()
+                    component.onAddFirstClick()
                 },
                 modifier = Modifier
                     .wrapContentWidth()
+            ) {
+                Text(text = "<- Add")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onAddMiddleClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Add")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onAddClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Add ->")
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    component.onShiftBackwardClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "<- Shift")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onShuffleClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Shuffle")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onShiftForwardClick()
+                },
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
+                Text(text = "Shift ->")
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    component.onCloseRandomClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(text = "Close Random")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onCloseHalfClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(text = "Close Half")
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    component.onCloseClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
             ) {
                 Text(text = "Close")
             }
@@ -67,21 +181,9 @@ fun DemoDialog(
                     component.onCloseAllClick()
                 },
                 modifier = Modifier
-                    .wrapContentWidth()
+                    .weight(1f)
             ) {
                 Text(text = "Close All")
-            }
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Button(
-                onClick = {
-                    component.onCloseRandomClick()
-                },
-                modifier = Modifier
-                    .wrapContentWidth()
-            ) {
-                Text(text = "Close Random")
             }
         }
 

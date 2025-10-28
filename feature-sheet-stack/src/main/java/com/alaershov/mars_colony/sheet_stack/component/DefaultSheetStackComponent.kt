@@ -2,8 +2,8 @@ package com.alaershov.mars_colony.sheet_stack.component
 
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
+import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.navigate
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pop
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.popRandom
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pushNew
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.replaceAll
 import com.alaershov.mars_colony.demo_dialog.DemoDialogState
@@ -16,6 +16,8 @@ import com.arkivanov.decompose.value.Value
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 class DefaultSheetStackComponent @AssistedInject internal constructor(
     @Assisted
@@ -36,6 +38,11 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
             childFactory = ::createBottomSheet,
         )
 
+    // баги
+    // - размер 17+ дрыгается при разворачивании на весь экран
+    // - вставка в начало стека заставляет уже открытый диалог на верхушке стека
+    // открыться заново, а новый диалог сзади не анимируется, а открывается сразу весь
+    // - удаление нескольких диалогов сразу делает это без анимации, они просто пропадают
     private fun createBottomSheet(
         config: SheetStackBottomSheetConfig,
         componentContext: ComponentContext
@@ -60,7 +67,68 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                         bottomSheetPagesNavigation.replaceAll()
                     },
                     onCloseRandomClick = {
-                        bottomSheetPagesNavigation.popRandom()
+                        bottomSheetPagesNavigation.navigate(
+                            transformer = { items ->
+                                if (items.isEmpty()) {
+                                    items
+                                } else {
+                                    val randomItem = items.random()
+                                    items.filter { item -> item != randomItem }
+                                }
+                            }
+                        )
+                    },
+                    onCloseHalfClick = {
+                        bottomSheetPagesNavigation.navigate { items ->
+                            if (items.isEmpty()) {
+                                items
+                            } else {
+                                items.dropLast(ceil(items.size / 2.0).roundToInt())
+                            }
+                        }
+                    },
+                    onAddClick = {
+                        bottomSheetPagesNavigation.pushNew(
+                            SheetStackBottomSheetConfig.Sheet(randomSheetSize())
+                        )
+                    },
+                    onAddFirstClick = {
+                        val config = SheetStackBottomSheetConfig.Sheet(randomSheetSize())
+                        bottomSheetPagesNavigation.navigate { items ->
+                            listOf(config) + items
+                        }
+                    },
+                    onAddMiddleClick = {
+                        val config = SheetStackBottomSheetConfig.Sheet(randomSheetSize())
+                        bottomSheetPagesNavigation.navigate { items ->
+                            val middleIndex = items.size / 2
+                            val firstPart = items.subList(0, middleIndex)
+                            val secondPart = items.subList(middleIndex, items.size)
+                            firstPart + config + secondPart
+                        }
+                    },
+                    onShuffleClick = {
+                        bottomSheetPagesNavigation.navigate { items ->
+                            items.shuffled()
+                        }
+                    },
+                    onShiftForwardClick = {
+                        bottomSheetPagesNavigation.navigate { items ->
+                            if (items.isEmpty()) {
+                                items
+                            } else {
+                                listOf(items.last()) + items.dropLast(1)
+                            }
+                        }
+                    },
+                    onShiftBackwardClick = {
+                        bottomSheetPagesNavigation.navigate { items ->
+                            if (items.isEmpty()) {
+                                items
+                            } else {
+                                items.drop(1) + listOf(items.first())
+                            }
+                        }
                     },
                 )
             }
@@ -77,13 +145,13 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
     override fun onOpenSingleDialogClick() {
         bottomSheetPagesNavigation.pushNew(
-            SheetStackBottomSheetConfig.Sheet(1)
+            SheetStackBottomSheetConfig.Sheet(randomSheetSize())
         )
     }
 
     override fun onOpenFewDialogsClick() {
         val sizeList = List(3) {
-            (1..maxSize).random()
+            randomSheetSize()
         }.sortedDescending()
         for (size in sizeList) {
             bottomSheetPagesNavigation.pushNew(
@@ -94,13 +162,17 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
     override fun onOpenManyDialogsClick() {
         val sizeList = List(8) {
-            (1..maxSize).random()
+            randomSheetSize()
         }.sortedDescending()
         for (size in sizeList) {
             bottomSheetPagesNavigation.pushNew(
                 SheetStackBottomSheetConfig.Sheet(size)
             )
         }
+    }
+
+    private fun randomSheetSize(): Int {
+        return (1..maxSize).random()
     }
 
     private fun dismissBottomSheet() {

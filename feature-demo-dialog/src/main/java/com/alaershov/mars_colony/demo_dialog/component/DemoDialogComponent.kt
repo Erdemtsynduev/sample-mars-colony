@@ -3,7 +3,6 @@ package com.alaershov.mars_colony.demo_dialog.component
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.demo_dialog.DemoDialogState
 import com.arkivanov.decompose.ComponentContext
-import dagger.assisted.Assisted
 import kotlinx.coroutines.flow.StateFlow
 
 interface DemoDialogComponent : BottomSheetContentComponent {
@@ -41,6 +40,13 @@ interface DemoDialogComponent : BottomSheetContentComponent {
             onCloseClick: () -> Unit,
             onCloseAllClick: () -> Unit,
             onCloseRandomClick: () -> Unit,
+            onCloseHalfClick: () -> Unit,
+            onAddClick: () -> Unit,
+            onAddFirstClick: () -> Unit,
+            onAddMiddleClick: () -> Unit,
+            onShuffleClick: () -> Unit,
+            onShiftForwardClick: () -> Unit,
+            onShiftBackwardClick: () -> Unit,
         ): DemoDialogComponent
     }
 }
