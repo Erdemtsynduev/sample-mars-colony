@@ -10,6 +10,7 @@ import com.alaershov.mars_colony.habitat.list_screen.component.HabitatListScreen
 import com.alaershov.mars_colony.power.list_screen.component.PowerPlantListScreenComponent
 import com.alaershov.mars_colony.root.RootComponent.Child
 import com.alaershov.mars_colony.sheet_stack.component.SheetStackComponent
+import com.alaershov.mars_colony.sheet_stack.component.SheetStackMode
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.router.pages.PagesNavigation
@@ -75,8 +76,8 @@ class DefaultRootComponent @AssistedInject internal constructor(
                     navigateToPowerPlantList = {
                         navigation.pushNew(Config.PowerPlantList)
                     },
-                    navigateToSheetStack = {
-                        navigation.pushNew(Config.SheetStack)
+                    navigateToSheetStack = { mode ->
+                        navigation.pushNew(Config.SheetStack(mode))
                     }
                 )
             )
@@ -103,9 +104,10 @@ class DefaultRootComponent @AssistedInject internal constructor(
                 )
             )
 
-            Config.SheetStack -> Child.SheetStack(
+            is Config.SheetStack -> Child.SheetStack(
                 sheetStackComponentFactory.create(
                     componentContext = componentContext,
+                    mode = config.mode,
                     onBackClick = {
                         navigation.pop()
                     }
@@ -151,7 +153,9 @@ class DefaultRootComponent @AssistedInject internal constructor(
         data object PowerPlantList : Config()
 
         @Serializable
-        data object SheetStack : Config()
+        data class SheetStack(
+            val mode: SheetStackMode,
+        ) : Config()
     }
 
     @AssistedFactory

@@ -17,18 +17,30 @@ import com.arkivanov.decompose.value.Value
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class DefaultSheetStackComponent @AssistedInject internal constructor(
     @Assisted
     componentContext: ComponentContext,
+    @Assisted
+    mode: SheetStackMode,
     @Assisted("onBackClick")
     private val onBackClick: () -> Unit,
     private val demoDialogComponentFactory: DemoDialogComponent.Factory,
 ) : SheetStackComponent, ComponentContext by componentContext {
 
     private val maxSize = 20
+
+    private val _state = MutableStateFlow(
+        SheetStackScreenState(
+            mode = mode
+        )
+    )
+
+    override val state: StateFlow<SheetStackScreenState> = _state
 
     private val bottomSheetPagesNavigation = PagesNavigation<SheetStackBottomSheetConfig>()
 
@@ -211,6 +223,7 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
 
         override fun create(
             componentContext: ComponentContext,
+            mode: SheetStackMode,
             @Assisted("onBackClick")
             onBackClick: () -> Unit,
         ): DefaultSheetStackComponent

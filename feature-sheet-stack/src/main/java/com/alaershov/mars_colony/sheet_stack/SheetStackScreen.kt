@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,9 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
+import com.alaershov.mars_colony.bottom_sheet.unstyled.UnstyledChildPagesBottomSheet
+import com.alaershov.mars_colony.bottom_sheet.unstyled.UnstyledChildPagesModalBottomSheet
 import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetContent
 import com.alaershov.mars_colony.sheet_stack.component.PreviewSheetStackComponent
 import com.alaershov.mars_colony.sheet_stack.component.SheetStackComponent
+import com.alaershov.mars_colony.sheet_stack.component.SheetStackMode
 import com.alaershov.mars_colony.ui.R
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -41,11 +45,35 @@ fun SheetStackScreen(component: SheetStackComponent) {
 
         BottomSheetStackText(component)
 
-        ChildPagesModalBottomSheet(
-            sheetContentPagesState = component.bottomSheetPages,
-            onDismiss = component::onBottomSheetPagesDismiss,
-        ) { component ->
-            SheetStackBottomSheetContent(component)
+        val state by component.state.collectAsState()
+
+        when (state.mode) {
+            SheetStackMode.MATERIAL_3_MODAL -> {
+                ChildPagesModalBottomSheet(
+                    sheetContentPagesState = component.bottomSheetPages,
+                    onDismiss = component::onBottomSheetPagesDismiss,
+                ) { component ->
+                    SheetStackBottomSheetContent(component)
+                }
+            }
+
+            SheetStackMode.UNSTYLED_MODAL -> {
+                UnstyledChildPagesModalBottomSheet(
+                    sheetContentPagesState = component.bottomSheetPages,
+                    onDismiss = component::onBottomSheetPagesDismiss,
+                ) { component ->
+                    SheetStackBottomSheetContent(component)
+                }
+            }
+
+            SheetStackMode.UNSTYLED_NON_MODAL -> {
+                UnstyledChildPagesBottomSheet(
+                    sheetContentPagesState = component.bottomSheetPages,
+                    onDismiss = component::onBottomSheetPagesDismiss,
+                ) { component ->
+                    SheetStackBottomSheetContent(component)
+                }
+            }
         }
     }
 }

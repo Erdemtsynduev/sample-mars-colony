@@ -4,8 +4,11 @@ import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.value.Value
+import kotlinx.coroutines.flow.StateFlow
 
 interface SheetStackComponent {
+
+    val state: StateFlow<SheetStackScreenState>
 
     val bottomSheetPages: Value<ChildPages<*, BottomSheetContentComponent>>
 
@@ -25,6 +28,7 @@ interface SheetStackComponent {
 
         fun create(
             componentContext: ComponentContext,
+            mode: SheetStackMode,
             onBackClick: () -> Unit,
         ): SheetStackComponent
     }

@@ -6,6 +6,7 @@ import com.alaershov.mars_colony.habitat.totalCapacity
 import com.alaershov.mars_colony.power.PowerPlantRepository
 import com.alaershov.mars_colony.power.totalPower
 import com.alaershov.mars_colony.shared.weather.WeatherRepository
+import com.alaershov.mars_colony.sheet_stack.component.SheetStackMode
 import com.arkivanov.decompose.ComponentContext
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -33,16 +34,16 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
     private val navigateToHabitatList: () -> Unit,
     @Assisted("navigateToPowerPlantList")
     private val navigateToPowerPlantList: () -> Unit,
-    @Assisted("navigateToSheetStack")
-    private val navigateToSheetStack: () -> Unit,
+    @Assisted
+    private val navigateToSheetStack: (SheetStackMode) -> Unit,
 
     // ниже идут зависимости
     // их не нужно передавать в фабрику компонента
     // за зависимости отвечает DI
     // в этом его основная польза - не подставлять зависимости вручную.
     private val habitatRepository: HabitatRepository,
-    private val powerPlantRepository: PowerPlantRepository,
-    private val weatherRepository: WeatherRepository,
+    powerPlantRepository: PowerPlantRepository,
+    weatherRepository: WeatherRepository,
 ) : DashboardScreenComponent,
     ComponentContext by componentContext {
 
@@ -84,8 +85,16 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
         navigateToPowerPlantList()
     }
 
-    override fun onSheetStackClick() {
-        navigateToSheetStack()
+    override fun onSheetStackMaterial3ModalClick() {
+        navigateToSheetStack(SheetStackMode.MATERIAL_3_MODAL)
+    }
+
+    override fun onSheetStackUnstyledModalClick() {
+        navigateToSheetStack(SheetStackMode.UNSTYLED_MODAL)
+    }
+
+    override fun onSheetStackUnstyledNonModalClick() {
+        navigateToSheetStack(SheetStackMode.UNSTYLED_NON_MODAL)
     }
 
     fun onRefreshClick() {
@@ -112,8 +121,7 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
             navigateToHabitatList: () -> Unit,
             @Assisted("navigateToPowerPlantList")
             navigateToPowerPlantList: () -> Unit,
-            @Assisted("navigateToSheetStack")
-            navigateToSheetStack: () -> Unit,
+            navigateToSheetStack: (SheetStackMode) -> Unit,
         ): DefaultDashboardScreenComponent
     }
 }

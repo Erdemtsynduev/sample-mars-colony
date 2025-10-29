@@ -1,6 +1,7 @@
 package com.alaershov.mars_colony.dashboard.component
 
 import com.alaershov.mars_colony.dashboard.DashboardScreenState
+import com.alaershov.mars_colony.sheet_stack.component.SheetStackMode
 import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,7 +13,11 @@ interface DashboardScreenComponent {
 
     fun onPowerClick()
 
-    fun onSheetStackClick()
+    fun onSheetStackMaterial3ModalClick()
+
+    fun onSheetStackUnstyledModalClick()
+
+    fun onSheetStackUnstyledNonModalClick()
 
     /**
      * Интерфейс фабрики для создания экземпляра этого компонента.
@@ -25,7 +30,7 @@ interface DashboardScreenComponent {
             componentContext: ComponentContext,
             navigateToHabitatList: () -> Unit,
             navigateToPowerPlantList: () -> Unit,
-            navigateToSheetStack: () -> Unit,
+            navigateToSheetStack: (SheetStackMode) -> Unit,
         ): DashboardScreenComponent
     }
 }

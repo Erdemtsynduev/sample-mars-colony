@@ -116,11 +116,37 @@ fun DashboardScreen(component: DashboardScreenComponent) {
                 .fillMaxWidth()
                 .padding(16.dp),
             onClick = {
-                component.onSheetStackClick()
+                component.onSheetStackMaterial3ModalClick()
             }
         ) {
             Text(
-                text = "Sheet Stack"
+                text = "Sheet Stack Material 3 Modal"
+            )
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            onClick = {
+                component.onSheetStackUnstyledModalClick()
+            }
+        ) {
+            Text(
+                text = "Sheet Stack Unstyled Modal"
+            )
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            onClick = {
+                component.onSheetStackUnstyledNonModalClick()
+            }
+        ) {
+            Text(
+                text = "Sheet Stack Unstyled Non-Modal"
             )
         }
     }
