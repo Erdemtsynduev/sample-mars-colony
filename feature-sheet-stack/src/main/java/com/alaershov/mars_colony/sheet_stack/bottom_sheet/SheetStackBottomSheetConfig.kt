@@ -11,6 +11,6 @@ sealed class SheetStackBottomSheetConfig {
     @Serializable
     data class Sheet(
         val size: Int,
-        val key: Int = Uuid.random().hashCode(),
+        val key: String = Uuid.random().hashCode().toHexString(),
     ) : SheetStackBottomSheetConfig()
 }

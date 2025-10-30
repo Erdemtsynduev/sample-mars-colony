@@ -137,12 +137,12 @@ fun DemoDialog(
         ) {
             Button(
                 onClick = {
-                    component.onCloseRandomClick()
+                    component.onCloseAllClick()
                 },
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Text(text = "Close Random")
+                Text(text = "Close All")
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -169,7 +169,7 @@ fun DemoDialog(
                     component.onCloseFirstClick()
                 },
                 modifier = Modifier
-                    .weight(1f)
+                    .wrapContentWidth()
             ) {
                 Text(text = "<- Close")
             }
@@ -178,12 +178,12 @@ fun DemoDialog(
 
             Button(
                 onClick = {
-                    component.onCloseAllClick()
+                    component.onCloseMiddleClick()
                 },
                 modifier = Modifier
-                    .weight(1f)
+                    .wrapContentWidth()
             ) {
-                Text(text = "Close All")
+                Text(text = "Close Middle")
             }
 
             Spacer(modifier = Modifier.width(16.dp))
@@ -193,7 +193,7 @@ fun DemoDialog(
                     component.onCloseClick()
                 },
                 modifier = Modifier
-                    .weight(1f)
+                    .wrapContentWidth()
             ) {
                 Text(text = "Close ->")
             }

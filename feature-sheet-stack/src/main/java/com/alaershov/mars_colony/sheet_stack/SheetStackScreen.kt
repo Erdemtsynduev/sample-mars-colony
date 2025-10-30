@@ -27,8 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
-import com.alaershov.mars_colony.bottom_sheet.unstyled.UnstyledChildPagesBottomSheet
-import com.alaershov.mars_colony.bottom_sheet.unstyled.UnstyledChildPagesModalBottomSheet
+import com.alaershov.mars_colony.bottom_sheet.unstyled.non_modal.UnstyledChildPagesBottomSheet
+import com.alaershov.mars_colony.bottom_sheet.unstyled.modal.UnstyledChildPagesModalBottomSheet
 import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetContent
 import com.alaershov.mars_colony.sheet_stack.component.PreviewSheetStackComponent
 import com.alaershov.mars_colony.sheet_stack.component.SheetStackComponent

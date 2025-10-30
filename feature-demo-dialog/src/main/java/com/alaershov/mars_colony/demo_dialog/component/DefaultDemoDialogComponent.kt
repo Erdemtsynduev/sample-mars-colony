@@ -20,8 +20,8 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     private val onCloseAllClick: () -> Unit,
     @Assisted("onCloseFirstClick")
     private val onCloseFirstClick: () -> Unit,
-    @Assisted("onCloseRandomClick")
-    private val onCloseRandomClick: () -> Unit,
+    @Assisted("onCloseMiddleClick")
+    private val onCloseMiddleClick: () -> Unit,
     @Assisted("onCloseHalfClick")
     private val onCloseHalfClick: () -> Unit,
     @Assisted("onAddClick")
@@ -58,8 +58,8 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onCloseFirstClick.invoke()
     }
 
-    override fun onCloseRandomClick() {
-        onCloseRandomClick.invoke()
+    override fun onCloseMiddleClick() {
+        onCloseMiddleClick.invoke()
     }
 
     override fun onCloseHalfClick() {
@@ -108,8 +108,8 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
             onCloseAllClick: () -> Unit,
             @Assisted("onCloseFirstClick")
             onCloseFirstClick: () -> Unit,
-            @Assisted("onCloseRandomClick")
-            onCloseRandomClick: () -> Unit,
+            @Assisted("onCloseMiddleClick")
+            onCloseMiddleClick: () -> Unit,
             @Assisted("onCloseHalfClick")
             onCloseHalfClick: () -> Unit,
             @Assisted("onAddClick")

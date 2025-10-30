@@ -67,7 +67,7 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                     componentContext = componentContext,
                     dialogState = DemoDialogState(
                         size = size,
-                        message = "Dialog Size $size",
+                        message = "Dialog Size $size @${config.key}",
                         button = "Close"
                     ),
                     onButtonClick = {
@@ -86,15 +86,15 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                             items.drop(1)
                         }
                     },
-                    onCloseRandomClick = {
-                        log("onCloseRandomClick")
+                    onCloseMiddleClick = {
+                        log("onCloseMiddleClick")
                         bottomSheetPagesNavigation.navigate(
                             transformer = { items ->
                                 if (items.isEmpty()) {
                                     items
                                 } else {
-                                    val randomItem = items.random()
-                                    items.filter { item -> item != randomItem }
+                                    val middleIndex = ceil(items.size / 2.0).roundToInt() - 1
+                                    items.filterIndexed { index, _ -> index != middleIndex }
                                 }
                             }
                         )
@@ -105,7 +105,8 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                             if (items.isEmpty()) {
                                 items
                             } else {
-                                items.dropLast(ceil(items.size / 2.0).roundToInt())
+                                val middleIndex = ceil(items.size / 2.0).roundToInt()
+                                items.dropLast(middleIndex)
                             }
                         }
                     },

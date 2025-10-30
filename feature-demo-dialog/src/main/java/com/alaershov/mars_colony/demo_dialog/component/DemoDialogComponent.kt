@@ -17,7 +17,7 @@ interface DemoDialogComponent : BottomSheetContentComponent {
 
     fun onCloseFirstClick()
 
-    fun onCloseRandomClick()
+    fun onCloseMiddleClick()
 
     fun onCloseHalfClick()
 
@@ -42,7 +42,7 @@ interface DemoDialogComponent : BottomSheetContentComponent {
             onCloseClick: () -> Unit,
             onCloseAllClick: () -> Unit,
             onCloseFirstClick: () -> Unit,
-            onCloseRandomClick: () -> Unit,
+            onCloseMiddleClick: () -> Unit,
             onCloseHalfClick: () -> Unit,
             onAddClick: () -> Unit,
             onAddFirstClick: () -> Unit,

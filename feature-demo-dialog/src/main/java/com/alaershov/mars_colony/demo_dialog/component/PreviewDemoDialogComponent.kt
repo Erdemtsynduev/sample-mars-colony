@@ -23,7 +23,7 @@ class PreviewDemoDialogComponent : DemoDialogComponent {
 
     override fun onCloseFirstClick() {}
 
-    override fun onCloseRandomClick() {}
+    override fun onCloseMiddleClick() {}
 
     override fun onCloseHalfClick() {}
 
