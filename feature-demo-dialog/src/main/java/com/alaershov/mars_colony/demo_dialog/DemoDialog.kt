@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -34,6 +36,8 @@ fun DemoDialog(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .fillMaxWidth()
+            .imePadding()
+            .navigationBarsPadding()
             .padding(16.dp),
     ) {
         Text(
@@ -156,6 +160,18 @@ fun DemoDialog(
             ) {
                 Text(text = "Close Half")
             }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(
+                onClick = {
+                    component.onReplaceClick()
+                },
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(text = "Replace")
+            }
         }
 
         Row(
@@ -178,12 +194,12 @@ fun DemoDialog(
 
             Button(
                 onClick = {
-                    component.onCloseMiddleClick()
+                    component.onCloseSecondClick()
                 },
                 modifier = Modifier
                     .wrapContentWidth()
             ) {
-                Text(text = "Close Middle")
+                Text(text = "Close Second")
             }
 
             Spacer(modifier = Modifier.width(16.dp))

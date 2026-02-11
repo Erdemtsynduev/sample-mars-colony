@@ -14,6 +14,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.router.pages.PagesNavigation
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.backhandler.BackCallback
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -32,7 +33,8 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     private val demoDialogComponentFactory: DemoDialogComponent.Factory,
 ) : SheetStackComponent, ComponentContext by componentContext {
 
-    private val maxSize = 20
+    // TODO потестить размер 19 и больше, чтобы прям до верха экрана
+    private val maxSize = 15
 
     private val _state = MutableStateFlow(
         SheetStackScreenState(
@@ -50,6 +52,25 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
             serializer = SheetStackBottomSheetConfig.serializer(),
             childFactory = ::createBottomSheet,
         )
+
+    private val backCallback = BackCallback {
+        navigateBack()
+    }
+
+    init {
+        backHandler.register(backCallback)
+        bottomSheetPages.subscribe {
+            backCallback.isEnabled = it.items.isNotEmpty()
+        }
+    }
+
+    private fun navigateBack() {
+        if (bottomSheetPages.value.items.isNotEmpty()) {
+            bottomSheetPagesNavigation.pop()
+        } else {
+            onBackClick.invoke()
+        }
+    }
 
     // баги
     // - размер 17+ дрыгается при разворачивании на весь экран
@@ -86,15 +107,14 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                             items.drop(1)
                         }
                     },
-                    onCloseMiddleClick = {
-                        log("onCloseMiddleClick")
+                    onCloseSecondClick = {
+                        log("onCloseSecondClick")
                         bottomSheetPagesNavigation.navigate(
                             transformer = { items ->
-                                if (items.isEmpty()) {
+                                if (items.size < 2) {
                                     items
                                 } else {
-                                    val middleIndex = ceil(items.size / 2.0).roundToInt() - 1
-                                    items.filterIndexed { index, _ -> index != middleIndex }
+                                    items.filterIndexed { index, _ -> index != items.lastIndex - 1 }
                                 }
                             }
                         )
@@ -108,6 +128,16 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
                                 val middleIndex = ceil(items.size / 2.0).roundToInt()
                                 items.dropLast(middleIndex)
                             }
+                        }
+                    },
+                    onReplaceClick = {
+                        log("onReplaceClick")
+                        val lastConfig = bottomSheetPages.value.items.lastOrNull()?.configuration
+                        bottomSheetPagesNavigation.pushNew(
+                            SheetStackBottomSheetConfig.Sheet(randomSheetSize())
+                        )
+                        bottomSheetPagesNavigation.navigate { items ->
+                            items.filterNot { it == lastConfig }
                         }
                     },
                     onAddClick = {
@@ -175,7 +205,7 @@ class DefaultSheetStackComponent @AssistedInject internal constructor(
     }
 
     override fun onBackClick() {
-        onBackClick.invoke()
+        navigateBack()
     }
 
     override fun onOpenSingleDialogClick() {

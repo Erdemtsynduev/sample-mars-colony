@@ -20,10 +20,12 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
     private val onCloseAllClick: () -> Unit,
     @Assisted("onCloseFirstClick")
     private val onCloseFirstClick: () -> Unit,
-    @Assisted("onCloseMiddleClick")
-    private val onCloseMiddleClick: () -> Unit,
+    @Assisted("onCloseSecondClick")
+    private val onCloseSecondClick: () -> Unit,
     @Assisted("onCloseHalfClick")
     private val onCloseHalfClick: () -> Unit,
+    @Assisted("onReplaceClick")
+    private val onReplaceClick: () -> Unit,
     @Assisted("onAddClick")
     private val onAddClick: () -> Unit,
     @Assisted("onAddFirstClick")
@@ -58,12 +60,16 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
         onCloseFirstClick.invoke()
     }
 
-    override fun onCloseMiddleClick() {
-        onCloseMiddleClick.invoke()
+    override fun onCloseSecondClick() {
+        onCloseSecondClick.invoke()
     }
 
     override fun onCloseHalfClick() {
         onCloseHalfClick.invoke()
+    }
+
+    override fun onReplaceClick() {
+        onReplaceClick.invoke()
     }
 
     override fun onAddClick() {
@@ -108,10 +114,12 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
             onCloseAllClick: () -> Unit,
             @Assisted("onCloseFirstClick")
             onCloseFirstClick: () -> Unit,
-            @Assisted("onCloseMiddleClick")
-            onCloseMiddleClick: () -> Unit,
+            @Assisted("onCloseSecondClick")
+            onCloseSecondClick: () -> Unit,
             @Assisted("onCloseHalfClick")
             onCloseHalfClick: () -> Unit,
+            @Assisted("onReplaceClick")
+            onReplaceClick: () -> Unit,
             @Assisted("onAddClick")
             onAddClick: () -> Unit,
             @Assisted("onAddFirstClick")
