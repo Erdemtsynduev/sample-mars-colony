@@ -65,6 +65,17 @@ fun MessageDialog(
                     Text(secondButtonText)
                 }
             }
+
+            state.thirdButton?.let { thirdButtonText ->
+                Button(
+                    onClick = { component.onThirdButtonClick() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                ) {
+                    Text(thirdButtonText)
+                }
+            }
         }
     }
 }

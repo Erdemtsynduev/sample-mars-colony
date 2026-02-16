@@ -51,6 +51,8 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
 
     private val dialogNavigation = PagesNavigation<HabitatDialogConfig>()
 
+    private var testDismantleCount = 0
+
     override val dialogPages: Value<ChildPages<HabitatDialogConfig, DialogChild>> =
         childPages(
             source = dialogNavigation,
@@ -95,7 +97,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         componentContext = componentContext,
                         habitatId = config.habitatId,
                         onConfirmationNeeded = {
-                            pushDialog(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
+                            pushDialog(HabitatDialogConfig.ConfirmDismantle(habitatId = "${config.habitatId}-$testDismantleCount"))
                         },
                         onDismiss = ::dismissDialog,
                     )
@@ -110,12 +112,17 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                             message = "Are you sure?",
                             button = "Yes, dismantle!",
                             secondButton = "Remove dialogs behind",
+                            thirdButton = "Open dismantle again (test stack)",
                         ),
                         onButtonClick = {
                             habitatRepository.dismantleHabitat(config.habitatId)
                             dismissAllDialogsForHabitat(config.habitatId)
                         },
                         onSecondButtonClick = ::dismissDialogsBehind,
+                        onThirdButtonClick = {
+                            testDismantleCount++
+                            pushDialog(HabitatDialogConfig.HabitatDismantle(habitatId = "${config.habitatId}-$testDismantleCount"))
+                        },
                         onDismiss = ::dismissDialog,
                     )
                 )

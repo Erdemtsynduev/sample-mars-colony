@@ -12,6 +12,8 @@ interface MessageDialogComponent {
 
     fun onSecondButtonClick()
 
+    fun onThirdButtonClick()
+
     fun onDismiss()
 
     interface Factory {
@@ -21,6 +23,7 @@ interface MessageDialogComponent {
             dialogState: MessageDialogState,
             onButtonClick: () -> Unit,
             onSecondButtonClick: () -> Unit,
+            onThirdButtonClick: () -> Unit,
             onDismiss: () -> Unit,
         ): MessageDialogComponent
     }
