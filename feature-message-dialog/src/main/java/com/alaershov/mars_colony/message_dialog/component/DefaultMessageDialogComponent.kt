@@ -12,8 +12,10 @@ class DefaultMessageDialogComponent @AssistedInject internal constructor(
     componentContext: ComponentContext,
     @Assisted
     dialogState: MessageDialogState,
-    @Assisted
+    @Assisted("onButtonClick")
     private val onButtonClick: () -> Unit,
+    @Assisted("onSecondButtonClick")
+    private val onSecondButtonClick: () -> Unit,
     @Assisted("onDismiss")
     private val onDismiss: () -> Unit,
 ) : MessageDialogComponent, ComponentContext by componentContext {
@@ -24,6 +26,10 @@ class DefaultMessageDialogComponent @AssistedInject internal constructor(
         onButtonClick.invoke()
     }
 
+    override fun onSecondButtonClick() {
+        onSecondButtonClick.invoke()
+    }
+
     override fun onDismiss() = onDismiss.invoke()
 
     @AssistedFactory
@@ -32,7 +38,10 @@ class DefaultMessageDialogComponent @AssistedInject internal constructor(
         override fun create(
             componentContext: ComponentContext,
             dialogState: MessageDialogState,
+            @Assisted("onButtonClick")
             onButtonClick: () -> Unit,
+            @Assisted("onSecondButtonClick")
+            onSecondButtonClick: () -> Unit,
             @Assisted("onDismiss")
             onDismiss: () -> Unit,
         ): DefaultMessageDialogComponent

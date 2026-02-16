@@ -17,6 +17,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,11 +39,13 @@ fun HabitatListScreen(component: HabitatListScreenComponent) {
 
         val dialogPages by component.dialogPages.subscribeAsState()
         dialogPages.items.forEach { entry ->
-            when (val dialogChild = entry.instance) {
-                is DialogChild.HabitatBuild -> HabitatBuildDialog(dialogChild.component)
-                is DialogChild.HabitatDismantle -> HabitatDismantleDialog(dialogChild.component)
-                is DialogChild.ConfirmDismantle -> MessageDialog(dialogChild.component)
-                else -> { }
+            key(entry.configuration) {
+                when (val dialogChild = entry.instance) {
+                    is DialogChild.HabitatBuild -> HabitatBuildDialog(dialogChild.component)
+                    is DialogChild.HabitatDismantle -> HabitatDismantleDialog(dialogChild.component)
+                    is DialogChild.ConfirmDismantle -> MessageDialog(dialogChild.component)
+                    else -> { }
+                }
             }
         }
     }

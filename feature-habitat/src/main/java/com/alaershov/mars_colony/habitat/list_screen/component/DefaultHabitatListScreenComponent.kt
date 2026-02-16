@@ -7,14 +7,14 @@ import com.alaershov.mars_colony.habitat.dismantle_dialog.component.HabitatDisma
 import com.alaershov.mars_colony.habitat.list_screen.DialogChild
 import com.alaershov.mars_colony.habitat.list_screen.HabitatDialogConfig
 import com.alaershov.mars_colony.habitat.list_screen.HabitatListScreenState
-import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.dialogPages
-import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.pop
-import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.pushNew
 import com.alaershov.mars_colony.message_dialog.MessageDialogState
 import com.alaershov.mars_colony.message_dialog.component.MessageDialogComponent
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.children.ChildNavState
 import com.arkivanov.decompose.router.pages.ChildPages
+import com.arkivanov.decompose.router.pages.Pages
 import com.arkivanov.decompose.router.pages.PagesNavigation
+import com.arkivanov.decompose.router.pages.childPages
 import com.arkivanov.decompose.value.Value
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -52,12 +52,17 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     private val dialogNavigation = PagesNavigation<HabitatDialogConfig>()
 
     override val dialogPages: Value<ChildPages<HabitatDialogConfig, DialogChild>> =
-        dialogPages(
+        childPages(
             source = dialogNavigation,
             serializer = HabitatDialogConfig.serializer(),
+            key = "HabitatDialogPages",
+            pageStatus = ::getDialogPageStatus,
             handleBackButton = true,
             childFactory = ::createDialog,
         )
+
+    private fun getDialogPageStatus(index: Int, pages: Pages<HabitatDialogConfig>): ChildNavState.Status =
+        if (index == pages.selectedIndex) ChildNavState.Status.RESUMED else ChildNavState.Status.CREATED
 
     init {
         habitatRepository.state
@@ -90,7 +95,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         componentContext = componentContext,
                         habitatId = config.habitatId,
                         onConfirmationNeeded = {
-                            dialogNavigation.pushNew(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
+                            pushDialog(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
                         },
                         onDismiss = ::dismissDialog,
                     )
@@ -103,13 +108,14 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         componentContext = componentContext,
                         dialogState = MessageDialogState(
                             message = "Are you sure?",
-                            button = "Yes, dismantle!"
+                            button = "Yes, dismantle!",
+                            secondButton = "Remove dialogs behind",
                         ),
                         onButtonClick = {
                             habitatRepository.dismantleHabitat(config.habitatId)
-                            dismissDialog()
-                            dismissDialog()
+                            dismissDialogs(2)
                         },
+                        onSecondButtonClick = ::dismissDialogsBehind,
                         onDismiss = ::dismissDialog,
                     )
                 )
@@ -122,19 +128,55 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     }
 
     override fun onBuildClick() {
-        dialogNavigation.pushNew(HabitatDialogConfig.HabitatBuild)
+        pushDialog(HabitatDialogConfig.HabitatBuild)
     }
 
     override fun onHabitatClick(id: String) {
-        dialogNavigation.pushNew(HabitatDialogConfig.HabitatDismantle(habitatId = id))
+        pushDialog(HabitatDialogConfig.HabitatDismantle(habitatId = id))
     }
 
     override fun onDialogDismiss() {
         dismissDialog()
     }
 
+    private fun pushDialog(configuration: HabitatDialogConfig) {
+        dialogNavigation.navigate(
+            transformer = { pages ->
+                val newItems = if (pages.items.lastOrNull() == configuration) pages.items else pages.items + configuration
+                pages.copy(items = newItems, selectedIndex = newItems.size - 1)
+            },
+            onComplete = { _, _ -> }
+        )
+    }
+
     private fun dismissDialog() {
-        dialogNavigation.pop()
+        dialogNavigation.navigate(
+            transformer = { pages ->
+                val newItems = pages.items.takeIf { it.isNotEmpty() }?.dropLast(1) ?: pages.items
+                pages.copy(items = newItems, selectedIndex = (newItems.size - 1).coerceAtLeast(0))
+            },
+            onComplete = { _, _ -> }
+        )
+    }
+
+    private fun dismissDialogs(count: Int) {
+        dialogNavigation.navigate(
+            transformer = { pages ->
+                val newItems = pages.items.dropLast(count)
+                pages.copy(items = newItems, selectedIndex = (newItems.size - 1).coerceAtLeast(0))
+            },
+            onComplete = { _, _ -> }
+        )
+    }
+
+    private fun dismissDialogsBehind() {
+        dialogNavigation.navigate(
+            transformer = { pages ->
+                val top = pages.items.lastOrNull()
+                pages.copy(items = listOfNotNull(top), selectedIndex = 0)
+            },
+            onComplete = { _, _ -> }
+        )
     }
 
     @AssistedFactory

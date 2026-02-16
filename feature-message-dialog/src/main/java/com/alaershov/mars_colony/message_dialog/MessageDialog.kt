@@ -54,6 +54,17 @@ fun MessageDialog(
             ) {
                 Text(state.button)
             }
+
+            state.secondButton?.let { secondButtonText ->
+                Button(
+                    onClick = { component.onSecondButtonClick() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                ) {
+                    Text(secondButtonText)
+                }
+            }
         }
     }
 }

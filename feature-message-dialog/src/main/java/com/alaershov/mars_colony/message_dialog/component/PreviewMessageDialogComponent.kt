@@ -14,5 +14,7 @@ class PreviewMessageDialogComponent : MessageDialogComponent {
 
     override fun onButtonClick() {}
 
+    override fun onSecondButtonClick() {}
+
     override fun onDismiss() {}
 }
