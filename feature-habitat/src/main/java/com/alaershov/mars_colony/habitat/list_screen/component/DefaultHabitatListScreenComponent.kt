@@ -1,20 +1,20 @@
 package com.alaershov.mars_colony.habitat.list_screen.component
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pop
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pushNew
 import com.alaershov.mars_colony.habitat.HabitatRepository
-import com.alaershov.mars_colony.habitat.bottom_sheet.HabitatBottomSheetConfig
+import com.alaershov.mars_colony.habitat.totalCapacity
 import com.alaershov.mars_colony.habitat.build_dialog.HabitatBuildDialogComponent
 import com.alaershov.mars_colony.habitat.dismantle_dialog.component.HabitatDismantleDialogComponent
+import com.alaershov.mars_colony.habitat.list_screen.DialogChild
+import com.alaershov.mars_colony.habitat.list_screen.HabitatDialogConfig
 import com.alaershov.mars_colony.habitat.list_screen.HabitatListScreenState
-import com.alaershov.mars_colony.habitat.totalCapacity
 import com.alaershov.mars_colony.message_dialog.MessageDialogState
 import com.alaershov.mars_colony.message_dialog.component.MessageDialogComponent
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.pages.ChildPages
-import com.arkivanov.decompose.router.pages.PagesNavigation
+import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -32,7 +32,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     componentContext: ComponentContext,
     @Assisted("onBackClick")
     private val onBackClick: () -> Unit,
-    habitatRepository: HabitatRepository,
+    private val habitatRepository: HabitatRepository,
     private val habitatBuildDialogComponentFactory: HabitatBuildDialogComponent.Factory,
     private val habitatDismantleDialogComponentFactory: HabitatDismantleDialogComponent.Factory,
     private val messageDialogComponentFactory: MessageDialogComponent.Factory,
@@ -49,13 +49,15 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    private val bottomSheetPagesNavigation = PagesNavigation<HabitatBottomSheetConfig>()
+    private val dialogNavigation = SlotNavigation<HabitatDialogConfig>()
 
-    override val bottomSheetPages: Value<ChildPages<HabitatBottomSheetConfig, BottomSheetContentComponent>> =
-        bottomSheetPages(
-            source = bottomSheetPagesNavigation,
-            serializer = HabitatBottomSheetConfig.serializer(),
-            childFactory = ::createBottomSheet,
+    override val dialogSlot: Value<ChildSlot<HabitatDialogConfig, DialogChild>> =
+        childSlot(
+            source = dialogNavigation,
+            serializer = HabitatDialogConfig.serializer(),
+            handleBackButton = true,
+            key = "HabitatDialogSlot",
+            childFactory = ::createDialog,
         )
 
     init {
@@ -69,53 +71,50 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
             .launchIn(scope)
     }
 
-    private fun createBottomSheet(
-        config: HabitatBottomSheetConfig,
+    private fun createDialog(
+        config: HabitatDialogConfig,
         componentContext: ComponentContext
-    ): BottomSheetContentComponent {
+    ): DialogChild {
         return when (config) {
-            HabitatBottomSheetConfig.HabitatBuild -> {
-                habitatBuildDialogComponentFactory.create(
-                    componentContext = componentContext,
-                    onDismiss = ::dismissBottomSheet,
+            HabitatDialogConfig.HabitatBuild -> {
+                DialogChild.HabitatBuild(
+                    habitatBuildDialogComponentFactory.create(
+                        componentContext = componentContext,
+                        onDismiss = ::dismissDialog,
+                    )
                 )
             }
 
-            is HabitatBottomSheetConfig.HabitatDismantle -> {
-                habitatDismantleDialogComponentFactory.create(
-                    componentContext = componentContext,
-                    habitatId = config.habitatId,
-                    onConfirmationNeeded = {
-                        bottomSheetPagesNavigation.pushNew(HabitatBottomSheetConfig.ConfirmDismantle)
-                    },
-                    onDismiss = ::dismissBottomSheet,
+            is HabitatDialogConfig.HabitatDismantle -> {
+                DialogChild.HabitatDismantle(
+                    habitatDismantleDialogComponentFactory.create(
+                        componentContext = componentContext,
+                        habitatId = config.habitatId,
+                        onConfirmationNeeded = {
+                            dialogNavigation.activate(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
+                        },
+                        onDismiss = ::dismissDialog,
+                    )
                 )
             }
 
-            is HabitatBottomSheetConfig.ConfirmDismantle -> {
-                messageDialogComponentFactory.create(
-                    componentContext = componentContext,
-                    dialogState = MessageDialogState(
-                        message = "Are you sure?",
-                        button = "Yes, dismantle!"
-                    ),
-                    onButtonClick = {
-                        dismissBottomSheet()
-                        confirmDismantle()
-                    },
+            is HabitatDialogConfig.ConfirmDismantle -> {
+                DialogChild.ConfirmDismantle(
+                    messageDialogComponentFactory.create(
+                        componentContext = componentContext,
+                        dialogState = MessageDialogState(
+                            message = "Are you sure?",
+                            button = "Yes, dismantle!"
+                        ),
+                        onButtonClick = {
+                            habitatRepository.dismantleHabitat(config.habitatId)
+                            dismissDialog()
+                        },
+                        onDismiss = ::dismissDialog,
+                    )
                 )
             }
         }
-    }
-
-    private fun confirmDismantle() {
-        val dismantleDialogComponent = bottomSheetPages.value.items
-            .map { it.instance }
-            .findLast {
-                it is HabitatDismantleDialogComponent
-            } as? HabitatDismantleDialogComponent
-
-        dismantleDialogComponent?.confirm()
     }
 
     override fun onBackClick() {
@@ -123,19 +122,19 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     }
 
     override fun onBuildClick() {
-        bottomSheetPagesNavigation.pushNew(HabitatBottomSheetConfig.HabitatBuild)
+        dialogNavigation.activate(HabitatDialogConfig.HabitatBuild)
     }
 
     override fun onHabitatClick(id: String) {
-        bottomSheetPagesNavigation.pushNew(HabitatBottomSheetConfig.HabitatDismantle(id))
+        dialogNavigation.activate(HabitatDialogConfig.HabitatDismantle(habitatId = id))
     }
 
-    override fun onBottomSheetPagesDismiss() {
-        dismissBottomSheet()
+    override fun onDialogDismiss() {
+        dismissDialog()
     }
 
-    private fun dismissBottomSheet() {
-        bottomSheetPagesNavigation.pop()
+    private fun dismissDialog() {
+        dialogNavigation.dismiss()
     }
 
     @AssistedFactory

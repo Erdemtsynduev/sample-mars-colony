@@ -53,7 +53,6 @@ dependencyResolutionManagement {
 rootProject.name = "Mars Colony"
 include ':app'
 include ':ui'
-include ':bottom-sheet'
 include ':feature-root'
 include ':feature-dashboard'
 include ':feature-habitat'

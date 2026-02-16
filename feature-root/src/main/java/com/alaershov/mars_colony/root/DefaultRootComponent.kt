@@ -1,17 +1,11 @@
 package com.alaershov.mars_colony.root
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.bottomSheetPages
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pop
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.navigation.pushNew
 import com.alaershov.mars_colony.dashboard.component.DashboardScreenComponent
 import com.alaershov.mars_colony.habitat.info_screen.HabitatInfoScreenComponent
 import com.alaershov.mars_colony.habitat.list_screen.component.HabitatListScreenComponent
 import com.alaershov.mars_colony.power.list_screen.component.PowerPlantListScreenComponent
 import com.alaershov.mars_colony.root.RootComponent.Child
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.pages.ChildPages
-import com.arkivanov.decompose.router.pages.PagesNavigation
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
@@ -53,15 +47,6 @@ class DefaultRootComponent @AssistedInject internal constructor(
 
     override val childStack: Value<ChildStack<*, Child>> = _childStack
 
-    private val bottomSheetPagesNavigation = PagesNavigation<RootBottomSheetConfig>()
-
-    override val bottomSheetPages: Value<ChildPages<RootBottomSheetConfig, BottomSheetContentComponent>> =
-        bottomSheetPages(
-            source = bottomSheetPagesNavigation,
-            serializer = RootBottomSheetConfig.serializer(),
-            childFactory = ::createBottomSheet,
-        )
-
     private fun createChild(config: Config, componentContext: ComponentContext): Child {
         return when (config) {
             Config.Dashboard -> Child.Dashboard(
@@ -98,25 +83,6 @@ class DefaultRootComponent @AssistedInject internal constructor(
                 )
             )
         }
-    }
-
-    private fun createBottomSheet(
-        config: RootBottomSheetConfig,
-        componentContext: ComponentContext
-    ): BottomSheetContentComponent {
-        TODO()
-    }
-
-    private fun showBottomSheet(config: RootBottomSheetConfig) {
-        bottomSheetPagesNavigation.pushNew(config)
-    }
-
-    private fun dismissBottomSheet() {
-        bottomSheetPagesNavigation.pop()
-    }
-
-    override fun onBottomSheetPagesDismiss() {
-        bottomSheetPagesNavigation.pop()
     }
 
     @Serializable

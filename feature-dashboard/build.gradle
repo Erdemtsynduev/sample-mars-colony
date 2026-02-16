@@ -42,7 +42,6 @@ dependencies {
     ksp libs.dagger.compiler
 
     implementation project(':ui')
-    implementation project(':bottom-sheet')
     implementation project(':feature-habitat')
     implementation project(':feature-power')
     implementation project(':shared-weather')

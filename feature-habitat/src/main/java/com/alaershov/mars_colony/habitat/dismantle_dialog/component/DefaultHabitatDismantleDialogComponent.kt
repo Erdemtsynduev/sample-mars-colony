@@ -1,6 +1,5 @@
 package com.alaershov.mars_colony.habitat.dismantle_dialog.component
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentState
 import com.alaershov.mars_colony.habitat.HabitatRepository
 import com.alaershov.mars_colony.habitat.dismantle_dialog.HabitatDismantleDialogState
 import com.alaershov.mars_colony.habitat.totalCapacity
@@ -38,8 +37,6 @@ class DefaultHabitatDismantleDialogComponent @AssistedInject internal constructo
 
     override val state: StateFlow<HabitatDismantleDialogState> = _state
 
-    override val bottomSheetContentState: StateFlow<BottomSheetContentState> = state
-
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     init {
@@ -57,15 +54,9 @@ class DefaultHabitatDismantleDialogComponent @AssistedInject internal constructo
 
     override fun onDismantleClick() {
         onConfirmationNeeded()
-
     }
 
-    override fun confirm() {
-        state.value.habitat?.id?.let { id ->
-            habitatRepository.dismantleHabitat(id)
-        }
-        onDismiss()
-    }
+    override fun onDismiss() = onDismiss.invoke()
 
     @AssistedFactory
     interface Factory : HabitatDismantleDialogComponent.Factory {

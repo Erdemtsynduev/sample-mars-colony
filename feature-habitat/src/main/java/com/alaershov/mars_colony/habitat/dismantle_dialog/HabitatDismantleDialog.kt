@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,51 +22,58 @@ import com.alaershov.mars_colony.habitat.dismantle_dialog.component.HabitatDisma
 import com.alaershov.mars_colony.habitat.dismantle_dialog.component.PreviewHabitatDismantleDialogComponent
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitatDismantleDialog(component: HabitatDismantleDialogComponent) {
     val state by component.state.collectAsState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
+    ModalBottomSheet(
+        onDismissRequest = component::onDismiss,
+        sheetState = sheetState,
     ) {
-        Text(
-            text = "Dismantle Habitat?",
-            style = MaterialTheme.typography.headlineLarge
-        )
-
-        Text(
-            text = "ID: ${state.habitat?.id}",
-            modifier = Modifier
-                .padding(top = 20.dp),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Text(
-            text = "Capacity: ${state.habitat?.capacity}",
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Text(
-            text = "Total capacity will go down:\n${state.capacityCurrent} -> ${state.capacityAfterDismantle}",
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .align(CenterHorizontally),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge
-        )
-
-        Button(
-            onClick = {
-                component.onDismantleClick()
-            },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp),
         ) {
-            Text("Dismantle")
+            Text(
+                text = "Dismantle Habitat?",
+                style = MaterialTheme.typography.headlineLarge
+            )
+
+            Text(
+                text = "ID: ${state.habitat?.id}",
+                modifier = Modifier
+                    .padding(top = 20.dp),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = "Capacity: ${state.habitat?.capacity}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = "Total capacity will go down:\n${state.capacityCurrent} -> ${state.capacityAfterDismantle}",
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .align(CenterHorizontally),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            Button(
+                onClick = {
+                    component.onDismantleClick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            ) {
+                Text("Dismantle")
+            }
         }
     }
 }
