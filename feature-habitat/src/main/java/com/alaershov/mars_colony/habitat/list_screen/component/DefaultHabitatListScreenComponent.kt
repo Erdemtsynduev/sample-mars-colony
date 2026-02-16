@@ -7,14 +7,14 @@ import com.alaershov.mars_colony.habitat.dismantle_dialog.component.HabitatDisma
 import com.alaershov.mars_colony.habitat.list_screen.DialogChild
 import com.alaershov.mars_colony.habitat.list_screen.HabitatDialogConfig
 import com.alaershov.mars_colony.habitat.list_screen.HabitatListScreenState
+import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.dialogPages
+import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.pop
+import com.alaershov.mars_colony.habitat.list_screen.dialog_pages.pushNew
 import com.alaershov.mars_colony.message_dialog.MessageDialogState
 import com.alaershov.mars_colony.message_dialog.component.MessageDialogComponent
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.slot.ChildSlot
-import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.activate
-import com.arkivanov.decompose.router.slot.childSlot
-import com.arkivanov.decompose.router.slot.dismiss
+import com.arkivanov.decompose.router.pages.ChildPages
+import com.arkivanov.decompose.router.pages.PagesNavigation
 import com.arkivanov.decompose.value.Value
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -49,14 +49,13 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    private val dialogNavigation = SlotNavigation<HabitatDialogConfig>()
+    private val dialogNavigation = PagesNavigation<HabitatDialogConfig>()
 
-    override val dialogSlot: Value<ChildSlot<HabitatDialogConfig, DialogChild>> =
-        childSlot(
+    override val dialogPages: Value<ChildPages<HabitatDialogConfig, DialogChild>> =
+        dialogPages(
             source = dialogNavigation,
             serializer = HabitatDialogConfig.serializer(),
             handleBackButton = true,
-            key = "HabitatDialogSlot",
             childFactory = ::createDialog,
         )
 
@@ -91,7 +90,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         componentContext = componentContext,
                         habitatId = config.habitatId,
                         onConfirmationNeeded = {
-                            dialogNavigation.activate(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
+                            dialogNavigation.pushNew(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
                         },
                         onDismiss = ::dismissDialog,
                     )
@@ -109,6 +108,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         onButtonClick = {
                             habitatRepository.dismantleHabitat(config.habitatId)
                             dismissDialog()
+                            dismissDialog()
                         },
                         onDismiss = ::dismissDialog,
                     )
@@ -122,11 +122,11 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     }
 
     override fun onBuildClick() {
-        dialogNavigation.activate(HabitatDialogConfig.HabitatBuild)
+        dialogNavigation.pushNew(HabitatDialogConfig.HabitatBuild)
     }
 
     override fun onHabitatClick(id: String) {
-        dialogNavigation.activate(HabitatDialogConfig.HabitatDismantle(habitatId = id))
+        dialogNavigation.pushNew(HabitatDialogConfig.HabitatDismantle(habitatId = id))
     }
 
     override fun onDialogDismiss() {
@@ -134,7 +134,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
     }
 
     private fun dismissDialog() {
-        dialogNavigation.dismiss()
+        dialogNavigation.pop()
     }
 
     @AssistedFactory

@@ -36,12 +36,13 @@ fun HabitatListScreen(component: HabitatListScreenComponent) {
     Box {
         ScreenContent(component)
 
-        val dialog by component.dialogSlot.subscribeAsState()
-        dialog.child?.instance?.let { dialogChild ->
-            when (dialogChild) {
+        val dialogPages by component.dialogPages.subscribeAsState()
+        dialogPages.items.forEach { entry ->
+            when (val dialogChild = entry.instance) {
                 is DialogChild.HabitatBuild -> HabitatBuildDialog(dialogChild.component)
                 is DialogChild.HabitatDismantle -> HabitatDismantleDialog(dialogChild.component)
                 is DialogChild.ConfirmDismantle -> MessageDialog(dialogChild.component)
+                else -> { }
             }
         }
     }
@@ -80,9 +81,7 @@ private fun ScreenContent(
             },
             actions = {
                 IconButton(
-                    onClick = {
-                        component.onBuildClick()
-                    }
+                    onClick = component::onBuildClick,
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_add),

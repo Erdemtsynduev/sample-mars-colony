@@ -4,7 +4,7 @@ import com.alaershov.mars_colony.habitat.Habitat
 import com.alaershov.mars_colony.habitat.list_screen.DialogChild
 import com.alaershov.mars_colony.habitat.list_screen.HabitatDialogConfig
 import com.alaershov.mars_colony.habitat.list_screen.HabitatListScreenState
-import com.arkivanov.decompose.router.slot.ChildSlot
+import com.arkivanov.decompose.router.pages.ChildPages
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +28,8 @@ internal class PreviewHabitatListScreenComponent : HabitatListScreenComponent {
         )
     )
 
-    override val dialogSlot: Value<ChildSlot<*, DialogChild>> =
-        MutableValue(ChildSlot<HabitatDialogConfig, DialogChild>(child = null))
+    override val dialogPages: Value<ChildPages<*, DialogChild>> =
+        MutableValue(ChildPages<HabitatDialogConfig, DialogChild>(items = emptyList(), selectedIndex = 0))
 
     override fun onBackClick() {}
 
