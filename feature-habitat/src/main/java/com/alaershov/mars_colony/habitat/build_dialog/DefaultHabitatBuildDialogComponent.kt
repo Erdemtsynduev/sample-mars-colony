@@ -1,6 +1,5 @@
 package com.alaershov.mars_colony.habitat.build_dialog
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentState
 import com.alaershov.mars_colony.habitat.HabitatRepository
 import com.arkivanov.decompose.ComponentContext
 import dagger.assisted.Assisted
@@ -30,7 +29,7 @@ class DefaultHabitatBuildDialogComponent @AssistedInject internal constructor(
 
     override val state: StateFlow<HabitatBuildDialogState> = _state
 
-    override val bottomSheetContentState: StateFlow<BottomSheetContentState> = state
+    override fun onDismiss() = onDismiss.invoke()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 

@@ -1,6 +1,5 @@
 package com.alaershov.mars_colony.habitat.dismantle_dialog.component
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentState
 import com.alaershov.mars_colony.habitat.Habitat
 import com.alaershov.mars_colony.habitat.dismantle_dialog.HabitatDismantleDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,9 +18,7 @@ internal class PreviewHabitatDismantleDialogComponent : HabitatDismantleDialogCo
         )
     )
 
-    override val bottomSheetContentState: StateFlow<BottomSheetContentState> = state
-
     override fun onDismantleClick() {}
 
-    override fun confirm() {}
+    override fun onDismiss() {}
 }

@@ -1,15 +1,20 @@
 package com.alaershov.mars_colony.message_dialog.component
 
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
 import com.alaershov.mars_colony.message_dialog.MessageDialogState
 import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.StateFlow
 
-interface MessageDialogComponent : BottomSheetContentComponent {
+interface MessageDialogComponent {
 
     val state: StateFlow<MessageDialogState>
 
     fun onButtonClick()
+
+    fun onSecondButtonClick()
+
+    fun onThirdButtonClick()
+
+    fun onDismiss()
 
     interface Factory {
 
@@ -17,6 +22,9 @@ interface MessageDialogComponent : BottomSheetContentComponent {
             componentContext: ComponentContext,
             dialogState: MessageDialogState,
             onButtonClick: () -> Unit,
+            onSecondButtonClick: () -> Unit,
+            onThirdButtonClick: () -> Unit,
+            onDismiss: () -> Unit,
         ): MessageDialogComponent
     }
 }

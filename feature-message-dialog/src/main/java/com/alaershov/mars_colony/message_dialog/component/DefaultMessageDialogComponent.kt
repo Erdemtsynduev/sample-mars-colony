@@ -12,17 +12,31 @@ class DefaultMessageDialogComponent @AssistedInject internal constructor(
     componentContext: ComponentContext,
     @Assisted
     dialogState: MessageDialogState,
-    @Assisted
+    @Assisted("onButtonClick")
     private val onButtonClick: () -> Unit,
+    @Assisted("onSecondButtonClick")
+    private val onSecondButtonClick: () -> Unit,
+    @Assisted("onThirdButtonClick")
+    private val onThirdButtonClick: () -> Unit,
+    @Assisted("onDismiss")
+    private val onDismiss: () -> Unit,
 ) : MessageDialogComponent, ComponentContext by componentContext {
 
     override val state = MutableStateFlow(dialogState)
 
-    override val bottomSheetContentState = state
-
     override fun onButtonClick() {
         onButtonClick.invoke()
     }
+
+    override fun onSecondButtonClick() {
+        onSecondButtonClick.invoke()
+    }
+
+    override fun onThirdButtonClick() {
+        onThirdButtonClick.invoke()
+    }
+
+    override fun onDismiss() = onDismiss.invoke()
 
     @AssistedFactory
     interface Factory : MessageDialogComponent.Factory {
@@ -30,7 +44,14 @@ class DefaultMessageDialogComponent @AssistedInject internal constructor(
         override fun create(
             componentContext: ComponentContext,
             dialogState: MessageDialogState,
+            @Assisted("onButtonClick")
             onButtonClick: () -> Unit,
+            @Assisted("onSecondButtonClick")
+            onSecondButtonClick: () -> Unit,
+            @Assisted("onThirdButtonClick")
+            onThirdButtonClick: () -> Unit,
+            @Assisted("onDismiss")
+            onDismiss: () -> Unit,
         ): DefaultMessageDialogComponent
     }
 }

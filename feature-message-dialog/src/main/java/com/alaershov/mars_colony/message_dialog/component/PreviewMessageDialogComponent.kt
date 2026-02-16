@@ -12,7 +12,11 @@ class PreviewMessageDialogComponent : MessageDialogComponent {
         )
     )
 
-    override val bottomSheetContentState = state
-
     override fun onButtonClick() {}
+
+    override fun onSecondButtonClick() {}
+
+    override fun onThirdButtonClick() {}
+
+    override fun onDismiss() {}
 }

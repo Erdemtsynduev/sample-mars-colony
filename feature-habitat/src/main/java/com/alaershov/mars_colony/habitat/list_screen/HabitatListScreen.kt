@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.alaershov.mars_colony.habitat.list_screen
 
 import androidx.compose.foundation.background
@@ -19,27 +17,36 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
-import com.alaershov.mars_colony.habitat.bottom_sheet.HabitatBottomSheetContent
+import com.alaershov.mars_colony.habitat.build_dialog.HabitatBuildDialog
+import com.alaershov.mars_colony.habitat.dismantle_dialog.HabitatDismantleDialog
 import com.alaershov.mars_colony.habitat.list_screen.component.HabitatListScreenComponent
 import com.alaershov.mars_colony.habitat.list_screen.component.PreviewHabitatListScreenComponent
+import com.alaershov.mars_colony.message_dialog.MessageDialog
 import com.alaershov.mars_colony.ui.R
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitatListScreen(component: HabitatListScreenComponent) {
     Box {
         ScreenContent(component)
 
-        ChildPagesModalBottomSheet(
-            sheetContentPagesState = component.bottomSheetPages,
-            onDismiss = component::onBottomSheetPagesDismiss
-        ) { component ->
-            HabitatBottomSheetContent(component)
+        val dialogPages by component.dialogPages.subscribeAsState()
+        dialogPages.items.forEach { entry ->
+            key(entry.configuration) {
+                when (val dialogChild = entry.instance) {
+                    is DialogChild.HabitatBuild -> HabitatBuildDialog(dialogChild.component)
+                    is DialogChild.HabitatDismantle -> HabitatDismantleDialog(dialogChild.component)
+                    is DialogChild.ConfirmDismantle -> MessageDialog(dialogChild.component)
+                    else -> { }
+                }
+            }
         }
 
 //        UnstyledChildPagesModalBottomSheet(
@@ -52,6 +59,7 @@ fun HabitatListScreen(component: HabitatListScreenComponent) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScreenContent(
     component: HabitatListScreenComponent,
@@ -84,9 +92,7 @@ private fun ScreenContent(
             },
             actions = {
                 IconButton(
-                    onClick = {
-                        component.onBuildClick()
-                    }
+                    onClick = component::onBuildClick,
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_add),

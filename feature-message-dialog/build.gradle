@@ -42,5 +42,4 @@ dependencies {
     ksp libs.dagger.compiler
 
     implementation project(':ui')
-    implementation project(':bottom-sheet')
 }

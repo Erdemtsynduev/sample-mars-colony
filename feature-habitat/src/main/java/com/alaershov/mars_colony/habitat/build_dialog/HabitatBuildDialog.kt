@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,77 +22,92 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentState
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HabitatBuildDialog(component: HabitatBuildDialogComponent) {
     val state by component.state.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Text(
-            text = "Build Habitat",
-            style = MaterialTheme.typography.headlineLarge
-        )
-        Text(
-            text = "Capacity",
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(top = 40.dp),
-            style = MaterialTheme.typography.titleLarge
-        )
-        Row(
-            modifier = Modifier.align(CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = {
-                    component.onMinusClick()
-                }
-            ) {
-                Text(
-                    text = "-",
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-            Text(
-                text = state.capacity.toString(),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(horizontal = 20.dp)
-            )
-            Button(
-                onClick = {
-                    component.onPlusClick()
-                }
-            ) {
-                Text(
-                    text = "+",
-                    style = MaterialTheme.typography.titleLarge
-                )
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { sheetValue ->
+            if (sheetValue == SheetValue.Hidden) {
+                !state.isProgress
+            } else {
+                true
             }
         }
-        Button(
-            onClick = {
-                component.onBuildClick()
-            },
+    )
+
+    ModalBottomSheet(
+        onDismissRequest = component::onDismiss,
+        sheetState = sheetState,
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp)
+                .padding(16.dp),
         ) {
-            if (state.isProgress) {
-                CircularProgressIndicator(
-                    color = Color.Black,
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(16.dp)
+            Text(
+                text = "Build Habitat",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Text(
+                text = "Capacity",
+                modifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(top = 40.dp),
+                style = MaterialTheme.typography.titleLarge
+            )
+            Row(
+                modifier = Modifier.align(CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = {
+                        component.onMinusClick()
+                    }
+                ) {
+                    Text(
+                        text = "-",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+                Text(
+                    text = state.capacity.toString(),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 )
-            } else {
-                Text("Build")
+                Button(
+                    onClick = {
+                        component.onPlusClick()
+                    }
+                ) {
+                    Text(
+                        text = "+",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+            Button(
+                onClick = {
+                    component.onBuildClick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+            ) {
+                if (state.isProgress) {
+                    CircularProgressIndicator(
+                        color = Color.Black,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(16.dp)
+                    )
+                } else {
+                    Text("Build")
+                }
             }
         }
     }
@@ -102,13 +121,13 @@ class PreviewHabitatBuildDialogComponent : HabitatBuildDialogComponent {
         )
     )
 
-    override val bottomSheetContentState: StateFlow<BottomSheetContentState> = state
-
     override fun onPlusClick() {}
 
     override fun onMinusClick() {}
 
     override fun onBuildClick() {}
+
+    override fun onDismiss() {}
 }
 
 @Preview(showBackground = true)
