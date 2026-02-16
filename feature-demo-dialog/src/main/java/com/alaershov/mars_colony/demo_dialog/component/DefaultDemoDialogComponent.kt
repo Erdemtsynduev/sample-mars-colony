@@ -42,8 +42,6 @@ class DefaultDemoDialogComponent @AssistedInject internal constructor(
 
     override val state = MutableStateFlow(dialogState)
 
-    override val bottomSheetContentState = state
-
     override fun onButtonClick() {
         onButtonClick.invoke()
     }

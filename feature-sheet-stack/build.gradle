@@ -43,7 +43,6 @@ dependencies {
     ksp libs.dagger.compiler
 
     implementation project(':ui')
-    implementation project(':bottom-sheet')
     implementation project(':feature-message-dialog')
     implementation project(':feature-demo-dialog')
 }

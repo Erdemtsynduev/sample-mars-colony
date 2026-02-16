@@ -22,9 +22,5 @@ class PreviewDashboardScreenComponent : DashboardScreenComponent {
 
     override fun onPowerClick() {}
 
-    override fun onSheetStackMaterial3ModalClick() {}
-
-    override fun onSheetStackUnstyledModalClick() {}
-
-    override fun onSheetStackUnstyledNonModalClick() {}
+    override fun onSheetStackModalClick() {}
 }

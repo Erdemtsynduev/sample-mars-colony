@@ -85,16 +85,8 @@ class DefaultDashboardScreenComponent @AssistedInject internal constructor(
         navigateToPowerPlantList()
     }
 
-    override fun onSheetStackMaterial3ModalClick() {
+    override fun onSheetStackModalClick() {
         navigateToSheetStack(SheetStackMode.MATERIAL_3_MODAL)
-    }
-
-    override fun onSheetStackUnstyledModalClick() {
-        navigateToSheetStack(SheetStackMode.UNSTYLED_MODAL)
-    }
-
-    override fun onSheetStackUnstyledNonModalClick() {
-        navigateToSheetStack(SheetStackMode.UNSTYLED_NON_MODAL)
     }
 
     fun onRefreshClick() {

@@ -18,21 +18,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alaershov.mars_colony.bottom_sheet.BottomSheetContentComponent
-import com.alaershov.mars_colony.bottom_sheet.material3.pages.ChildPagesModalBottomSheet
-import com.alaershov.mars_colony.bottom_sheet.unstyled.non_modal.UnstyledChildPagesBottomSheet
-import com.alaershov.mars_colony.bottom_sheet.unstyled.modal.UnstyledChildPagesModalBottomSheet
-import com.alaershov.mars_colony.sheet_stack.bottom_sheet.SheetStackBottomSheetContent
+import com.alaershov.mars_colony.demo_dialog.DemoDialog
+import com.alaershov.mars_colony.sheet_stack.component.DialogChild
 import com.alaershov.mars_colony.sheet_stack.component.PreviewSheetStackComponent
 import com.alaershov.mars_colony.sheet_stack.component.SheetStackComponent
-import com.alaershov.mars_colony.sheet_stack.component.SheetStackMode
 import com.alaershov.mars_colony.ui.R
 import com.alaershov.mars_colony.ui.theme.MarsColonyTheme
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -45,34 +40,11 @@ fun SheetStackScreen(component: SheetStackComponent) {
 
         BottomSheetStackText(component)
 
-        val state by component.state.collectAsState()
-
-        when (state.mode) {
-            SheetStackMode.MATERIAL_3_MODAL -> {
-                ChildPagesModalBottomSheet(
-                    sheetContentPagesState = component.bottomSheetPages,
-                    onDismiss = component::onBottomSheetPagesDismiss,
-                ) { component ->
-                    SheetStackBottomSheetContent(component)
-                }
-            }
-
-            SheetStackMode.UNSTYLED_MODAL -> {
-                UnstyledChildPagesModalBottomSheet(
-                    sheetContentPagesState = component.bottomSheetPages,
-                    onDismiss = component::onBottomSheetPagesDismiss,
-                ) { component ->
-                    SheetStackBottomSheetContent(component)
-                }
-            }
-
-            SheetStackMode.UNSTYLED_NON_MODAL -> {
-                UnstyledChildPagesBottomSheet(
-                    sheetContentPagesState = component.bottomSheetPages,
-                    onDismiss = component::onBottomSheetPagesDismiss,
-                ) { component ->
-                    SheetStackBottomSheetContent(component)
-                }
+        val dialogPages by component.dialogPages.subscribeAsState()
+        dialogPages.items.forEach { entry ->
+            when (val dialogChild = entry.instance) {
+                is DialogChild.DemoDialog -> DemoDialog(dialogChild.component)
+                else -> { }
             }
         }
     }
@@ -165,7 +137,7 @@ private fun TextButton(
 
 @Composable
 private fun BottomSheetStackText(component: SheetStackComponent) {
-    val stack by component.bottomSheetPages.subscribeAsState()
+    val stack by component.dialogPages.subscribeAsState()
 
     Box(
         modifier = Modifier
@@ -184,7 +156,7 @@ private fun BottomSheetStackText(component: SheetStackComponent) {
     }
 }
 
-private fun ChildPages<*, BottomSheetContentComponent>.toPrettyString(): String {
+private fun ChildPages<*, DialogChild>.toPrettyString(): String {
     return buildString {
         appendLine("Selected Index = $selectedIndex")
         items.forEachIndexed { index, child ->

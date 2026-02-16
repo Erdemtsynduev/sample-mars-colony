@@ -97,7 +97,7 @@ class DefaultHabitatListScreenComponent @AssistedInject internal constructor(
                         componentContext = componentContext,
                         habitatId = config.habitatId,
                         onConfirmationNeeded = {
-                            pushDialog(HabitatDialogConfig.ConfirmDismantle(habitatId = "${config.habitatId}-$testDismantleCount"))
+                            pushDialog(HabitatDialogConfig.ConfirmDismantle(habitatId = config.habitatId))
                         },
                         onDismiss = ::dismissDialog,
                     )

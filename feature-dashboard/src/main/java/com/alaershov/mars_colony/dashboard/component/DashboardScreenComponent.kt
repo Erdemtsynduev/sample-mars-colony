@@ -13,11 +13,7 @@ interface DashboardScreenComponent {
 
     fun onPowerClick()
 
-    fun onSheetStackMaterial3ModalClick()
-
-    fun onSheetStackUnstyledModalClick()
-
-    fun onSheetStackUnstyledNonModalClick()
+    fun onSheetStackModalClick()
 
     /**
      * Интерфейс фабрики для создания экземпляра этого компонента.
